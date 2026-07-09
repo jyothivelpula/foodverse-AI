@@ -1,0 +1,6 @@
+# Backend
+-r backend/requirements.txt
+
+# Frontend
+streamlit
+requests
