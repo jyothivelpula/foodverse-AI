@@ -211,11 +211,7 @@ DEMO_MENU_ITEMS = [
 NAV_PAGES = [
     ("home", "Home"),
     ("menu", "Menu"),
-    ("cart", "Cart"),
-    ("checkout", "Checkout"),
-    ("order_tracking", "Track Order"),
     ("ai_lounge", "AI Lounge"),
-    ("chat", "Chat"),
+    ("order_tracking", "Track"),
     ("reviews", "Reviews"),
-    ("profile", "Profile"),
 ]

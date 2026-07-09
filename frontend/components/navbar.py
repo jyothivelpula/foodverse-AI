@@ -46,12 +46,12 @@ def render_navbar() -> None:
                 set_page("profile")
                 st.rerun()
 
+    # Single nav row — no duplicate Home/Menu/Chat entries
     links = [
         ("home", "Home"),
         ("menu", "Menu"),
         ("ai_lounge", "AI Lounge"),
         ("order_tracking", "Track"),
-        ("chat", "Chat"),
         ("reviews", "Reviews"),
     ]
     cols = st.columns(len(links))

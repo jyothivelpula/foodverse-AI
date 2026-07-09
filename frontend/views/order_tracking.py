@@ -24,7 +24,7 @@ def render() -> None:
     render_order_status(stage_index, order_id=order_id)
 
     st.divider()
-    c1, c2, c3 = st.columns(3)
+    c1, c2 = st.columns(2)
     with c1:
         if st.button("Simulate next stage", use_container_width=True):
             st.session_state.order_stage_index = min(stage_index + 1, len(ORDER_STAGES) - 1)
@@ -32,10 +32,6 @@ def render() -> None:
     with c2:
         if st.button("Open AI Lounge", use_container_width=True):
             set_page("ai_lounge")
-            st.rerun()
-    with c3:
-        if st.button("Chat", use_container_width=True):
-            set_page("chat")
             st.rerun()
 
 

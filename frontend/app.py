@@ -15,19 +15,9 @@ if str(ROOT) not in sys.path:
 from components.footer import render_footer
 from components.navbar import render_navbar
 from config import APP_TITLE
-from pages import (
-    ai_lounge,
-    cart,
-    chat,
-    checkout,
-    home,
-    menu,
-    order_tracking,
-    profile,
-    reviews,
-)
 from utils.helpers import load_css
 from utils.session import init_session
+from views import ai_lounge, cart, checkout, home, menu, order_tracking, profile, reviews
 
 
 PAGE_RENDERERS = {
@@ -37,7 +27,7 @@ PAGE_RENDERERS = {
     "checkout": checkout.render,
     "order_tracking": order_tracking.render,
     "ai_lounge": ai_lounge.render,
-    "chat": chat.render,
+    "chat": ai_lounge.render,  # legacy alias → AI Lounge
     "reviews": reviews.render,
     "profile": profile.render,
 }
@@ -52,11 +42,14 @@ def main() -> None:
     )
     init_session()
 
-    # Force Streamlit light theme for all pages
     st.markdown(
         """
         <style>
           [data-testid="stAppViewContainer"] { color-scheme: light; }
+          [data-testid="stSidebar"],
+          [data-testid="stSidebarNav"],
+          section[data-testid="stSidebar"] { display: none !important; }
+          [data-testid="collapsedControl"] { display: none !important; }
         </style>
         """,
         unsafe_allow_html=True,
@@ -65,6 +58,10 @@ def main() -> None:
     css = load_css()
     if css:
         st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+
+    # Normalize old "chat" page to AI Lounge
+    if st.session_state.get("page") == "chat":
+        st.session_state.page = "ai_lounge"
 
     render_navbar()
 
