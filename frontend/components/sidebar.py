@@ -1,4 +1,4 @@
-"""Fixed 240px sidebar — aligned icon + label columns."""
+"""Premium sidebar — no emoji nav icons, orange active dot."""
 
 from __future__ import annotations
 
@@ -7,30 +7,29 @@ import streamlit as st
 from utils.session import set_page
 
 NAV_MAIN = [
-    ("home", "🏠", "Dashboard"),
-    ("menu", "🍕", "Menu"),
-    ("ai_lounge", "🤖", "AI Lounge"),
-    ("cart", "🛒", "Cart"),
-    ("order_tracking", "📦", "Orders"),
+    ("home", "Dashboard"),
+    ("menu", "Menu"),
+    ("ai_lounge", "AI Lounge"),
+    ("cart", "Cart"),
+    ("order_tracking", "Orders"),
 ]
 
 NAV_ACCOUNT = [
-    ("profile", "👤", "Profile"),
-    ("settings", "⚙", "Settings"),
+    ("profile", "Profile"),
+    ("settings", "Settings"),
 ]
 
 
-def _nav_item(key: str, emoji: str, label: str, current: str) -> None:
+def _nav_item(key: str, label: str, current: str) -> None:
     is_active = current == key
     active_cls = " is-active" if is_active else ""
 
-    # Fixed grid: icon column + label column (same X for every row)
     st.markdown(f'<div class="fv-nav-row{active_cls}">', unsafe_allow_html=True)
-    ico_col, label_col = st.columns([0.9, 3.6], vertical_alignment="center")
+    dot_col, label_col = st.columns([0.7, 4.0], vertical_alignment="center")
 
-    with ico_col:
+    with dot_col:
         st.markdown(
-            f'<div class="fv-nav-ico{active_cls}">{emoji}</div>',
+            f'<div class="fv-nav-dot{active_cls}" aria-hidden="true"></div>',
             unsafe_allow_html=True,
         )
 
@@ -50,17 +49,20 @@ def _nav_item(key: str, emoji: str, label: str, current: str) -> None:
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-def _section(title: str, items: list[tuple[str, str, str]], current: str) -> None:
+def _section(title: str, items: list[tuple[str, str]], current: str) -> None:
     st.markdown(
         f'<div class="fv-nav-section-label">{title}</div>',
         unsafe_allow_html=True,
     )
-    for key, emoji, label in items:
-        _nav_item(key, emoji, label, current)
+    for key, label in items:
+        _nav_item(key, label, current)
 
 
 def render_sidebar() -> None:
     current = st.session_state.get("page", "home")
+    customer = st.session_state.get("customer") or {}
+    name = (customer.get("name") or "").strip() or "Guest"
+    first = name.split()[0]
 
     with st.sidebar:
         st.markdown(
@@ -68,8 +70,8 @@ def render_sidebar() -> None:
             <div class="fv-side-brand">
               <div class="fv-side-logo">🍽</div>
               <div class="fv-side-brand-text">
-                <div class="fv-side-title">FoodVerse</div>
-                <div class="fv-side-sub">AI Food Platform</div>
+                <div class="fv-side-title">FoodVerse AI</div>
+                <div class="fv-side-sub">Order • Chat • Enjoy</div>
               </div>
             </div>
             """,
@@ -81,3 +83,19 @@ def render_sidebar() -> None:
 
         st.markdown('<div class="fv-side-divider"></div>', unsafe_allow_html=True)
         _section("ACCOUNT", NAV_ACCOUNT, current)
+
+        st.markdown('<div class="fv-side-divider"></div>', unsafe_allow_html=True)
+        st.markdown(
+            f"""
+            <div class="fv-side-user">
+              <div class="fv-side-user-avatar">👤</div>
+              <div>
+                <div class="fv-side-user-name">{first}</div>
+                <div class="fv-side-user-status">
+                  <span class="fv-online-dot"></span> Online
+                </div>
+              </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
