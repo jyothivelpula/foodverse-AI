@@ -112,9 +112,9 @@ p, .fv-desc, .fv-hero-lead {
   color: var(--fv-secondary) !important;
 }
 
-/* ═══════════════ SIDEBAR — fixed 240px ═══════════════ */
+/* ═══════════════ SIDEBAR — fixed 240px, aligned icons ═══════════════ */
 section[data-testid="stSidebar"] {
-  background: var(--fv-sidebar) !important;
+  background: #111827 !important;
   border-right: 1px solid rgba(255, 255, 255, 0.06);
   min-width: 240px !important;
   max-width: 240px !important;
@@ -129,7 +129,8 @@ section[data-testid="stSidebar"] > div:first-child {
 
 section[data-testid="stSidebar"] [data-testid="stSidebarContent"],
 section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
-  padding: 16px 12px 20px !important;
+  padding: 18px 12px 24px !important;
+  background: #111827 !important;
 }
 
 section[data-testid="stSidebar"] > div { padding-top: 0.35rem; }
@@ -144,7 +145,7 @@ section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
   align-items: center;
   text-align: center;
   gap: 0.4rem;
-  padding: 0.45rem 0.4rem 0.95rem;
+  padding: 0.35rem 0.35rem 1rem;
 }
 
 .fv-side-logo {
@@ -153,42 +154,92 @@ section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
   border-radius: 12px;
   display: grid;
   place-items: center;
-  font-size: 1.3rem;
-  background: rgba(255, 107, 53, 0.16);
-  border: 1px solid rgba(255, 107, 53, 0.28);
+  font-size: 1.35rem;
+  background: rgba(255, 107, 53, 0.14);
+  border: 1px solid rgba(255, 107, 53, 0.25);
 }
 
 .fv-side-title {
-  font-size: 1.02rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  color: #fff;
+  color: #ffffff;
   line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 .fv-side-sub {
-  font-size: 0.72rem;
-  color: #94a3b8;
-  margin-top: 0.1rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 0.15rem;
+  font-weight: 500;
 }
 
 .fv-side-divider {
   height: 1px;
   background: rgba(255, 255, 255, 0.1);
-  margin: 0.55rem 0 0.65rem;
+  margin: 0.65rem 0 0.75rem;
 }
 
 .fv-nav-section-label {
   font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #64748b;
-  padding: 0.1rem 0.5rem 0.5rem;
+  letter-spacing: 0.1em;
+  color: #6b7280;
+  padding: 0.15rem 0.65rem 0.55rem;
   text-transform: uppercase;
 }
 
-/* Equal nav items: 48px tall, padding 12px 20px */
+/* Each nav row = icon column + label column, fixed alignment */
+section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"] {
+  gap: 0 !important;
+  align-items: center !important;
+  min-height: 48px;
+  margin-bottom: 4px;
+  padding: 0 4px 0 0;
+  border-radius: 12px;
+  border-left: 4px solid transparent;
+  background: transparent;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+/* Active row chrome (left bar + bg) applied when primary button is inside */
+section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:has(button[kind="primary"]) {
+  background: #232c45 !important;
+  border-left: 4px solid #ff6b35 !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:hover {
+  background: #1f2937;
+}
+
+section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:has(button[kind="primary"]):hover {
+  background: #2a3552 !important;
+}
+
+/* Fixed icon cell — every emoji at the same X */
+.fv-nav-ico {
+  width: 40px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  color: #6b7280;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.fv-nav-ico.is-active {
+  color: #ff6b35;
+  background: rgba(255, 107, 53, 0.12);
+  border-radius: 10px;
+  width: 36px;
+  margin-left: 4px;
+}
+
+/* Label buttons — text starts at the same X every row */
 section[data-testid="stSidebar"] div[data-testid="stButton"] {
-  margin-bottom: 4px !important;
+  margin: 0 !important;
 }
 
 section[data-testid="stSidebar"] div[data-testid="stButton"] button {
@@ -196,87 +247,39 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button {
   height: 48px !important;
   min-height: 48px !important;
   max-height: 48px !important;
-  padding: 12px 20px !important;
+  padding: 12px 12px 12px 4px !important;
   box-sizing: border-box !important;
   background: transparent !important;
-  color: #94a3b8 !important;
+  color: #9ca3af !important;
   border: none !important;
-  border-left: 4px solid transparent !important;
+  border-left: none !important;
   justify-content: flex-start !important;
   text-align: left !important;
-  border-radius: 12px !important;
+  border-radius: 0 12px 12px 0 !important;
   font-weight: 600 !important;
-  font-size: 0.9rem !important;
+  font-size: 0.92rem !important;
   line-height: 1 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   box-shadow: none !important;
-  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease !important;
 }
 
 section[data-testid="stSidebar"] div[data-testid="stButton"] button:hover {
-  background: rgba(255, 255, 255, 0.05) !important;
-  color: #e2e8f0 !important;
+  background: transparent !important;
+  color: #ffffff !important;
 }
 
-/* Active — #232C45 + 4px orange bar + white text */
 section[data-testid="stSidebar"] div[data-testid="stButton"] button[kind="primary"] {
-  background: #232c45 !important;
+  background: transparent !important;
   color: #ffffff !important;
   border: none !important;
-  border-left: 4px solid #ff6b35 !important;
-  border-radius: 12px !important;
   box-shadow: none !important;
   font-weight: 700 !important;
 }
 
 section[data-testid="stSidebar"] div[data-testid="stButton"] button[kind="primary"]:hover {
-  background: #2a3552 !important;
+  background: transparent !important;
   color: #ffffff !important;
-  border-left: 4px solid #ff6b35 !important;
-}
-
-.fv-side-user {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  margin-top: 1.35rem;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.fv-side-user-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  background: #232c45;
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-
-.fv-side-user-name {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.2;
-}
-
-.fv-side-user-status {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.72rem;
-  color: #94a3b8;
-  margin-top: 0.15rem;
-}
-
-.fv-side-user-status .fv-online-dot {
-  width: 7px;
-  height: 7px;
 }
 
 /* ═══════════════ TOP NAV ═══════════════ */
