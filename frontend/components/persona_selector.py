@@ -35,25 +35,28 @@ def _render_persona_card(persona: dict) -> None:
               <div class="fv-persona-name">{html.escape(persona['display_name'])}</div>
             </div>
           </div>
-          <div class="fv-persona-tag">💬 {html.escape(vibe)}</div>
+          <div class="fv-persona-tag">
+            <span class="fv-ai-badge">AI</span>
+            {html.escape(vibe)}
+          </div>
           <div class="fv-persona-online"><span class="fv-online-dot"></span> Online</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    spacer_l, btn, spacer_r = st.columns([1.1, 1.6, 1.1])
+    spacer_l, btn, spacer_r = st.columns([0.8, 2.4, 0.8])
     with btn:
+        st.markdown('<div class="fv-chat-cta">', unsafe_allow_html=True)
         if st.button(
-            "💬 Chat",
+            "🟣 Start Chat →",
             key=f"persona_card_{persona['key']}",
             use_container_width=True,
-            type="primary",
         ):
             set_persona(persona["key"])
             st.session_state.lounge_view = "chat"
             st.rerun()
-
+        st.markdown("</div>", unsafe_allow_html=True)
 
 def render_persona_cards() -> None:
     st.markdown(

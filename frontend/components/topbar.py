@@ -1,4 +1,4 @@
-"""Modern top navbar — wide search + compact actions."""
+"""Top navigation bar — 56px height."""
 
 from __future__ import annotations
 
@@ -23,7 +23,8 @@ def render_topbar() -> None:
     name = (customer.get("name") or "").strip() or "Guest"
     first = name.split()[0]
 
-    # ~68% search | actions on the right
+    st.markdown('<div class="fv-topnav">', unsafe_allow_html=True)
+
     search, actions = st.columns([6.8, 3.2], vertical_alignment="center")
 
     with search:
@@ -66,3 +67,5 @@ def render_topbar() -> None:
                 set_page("profile")
                 st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)

@@ -65,10 +65,13 @@ def render() -> None:
         if not items:
             st.warning("No dishes match your filters.")
         else:
+            st.markdown('<div class="fv-menu-grid">', unsafe_allow_html=True)
             grid = st.columns(3)
             for idx, item in enumerate(items):
                 with grid[idx % 3]:
-                    render_food_card(item, compact=True)
+                    with st.container(border=True):
+                        render_food_card(item, compact=True)
+            st.markdown("</div>", unsafe_allow_html=True)
 
     with side:
         render_cart_sidebar()

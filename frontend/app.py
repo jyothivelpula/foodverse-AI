@@ -59,19 +59,20 @@ def main() -> None:
     if css:
         st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
-    # Force slim sidebar — Streamlit often overrides width from stylesheet alone
+    # Fixed 240px sidebar
     st.markdown(
         """
         <style>
           section[data-testid="stSidebar"],
           section[data-testid="stSidebar"] > div:first-child {
-            width: 230px !important;
-            min-width: 230px !important;
-            max-width: 230px !important;
+            width: 240px !important;
+            min-width: 240px !important;
+            max-width: 240px !important;
           }
           [data-testid="stSidebar"][aria-expanded="true"] {
-            min-width: 230px !important;
-            max-width: 230px !important;
+            min-width: 240px !important;
+            max-width: 240px !important;
+            width: 240px !important;
           }
         </style>
         """,

@@ -1,9 +1,9 @@
 """Shared frontend constants."""
 
 APP_NAME = "FoodVerse AI"
-APP_TAGLINE = "Order food. Chat while you wait."
+APP_TAGLINE = "Order • Chat • Enjoy"
 HERO_TITLE = "Delicious Food Meets Intelligent AI"
-HERO_SUBTITLE = "Order your meal and chat with your favorite AI companion."
+HERO_SUBTITLE = "Order delicious meals and chat with AI companions while you wait."
 
 ORDER_STAGES = [
     "Confirmed",
@@ -13,17 +13,27 @@ ORDER_STAGES = [
     "Delivered",
 ]
 
-NAV_ITEMS = [
+# Primary sidebar links (above divider) — kept for compatibility
+NAV_PRIMARY = [
     ("home", "🏠", "Dashboard"),
     ("menu", "🍕", "Menu"),
     ("ai_lounge", "🤖", "AI Lounge"),
     ("cart", "🛒", "Cart"),
     ("order_tracking", "📦", "Orders"),
+]
+
+# Secondary sidebar links (below divider)
+NAV_SECONDARY = [
+    ("profile", "👤", "Profile"),
+    ("settings", "⚙", "Settings"),
+]
+
+# Full list kept for compatibility
+NAV_ITEMS = NAV_PRIMARY + [
     ("favorites", "❤️", "Favorites"),
     ("reviews", "⭐", "Reviews"),
-    ("profile", "👤", "Profile"),
-    ("settings", "⚙️", "Settings"),
-]
+] + NAV_SECONDARY
+
 
 HOME_PERSONAS = [
     {"key": "actress", "display_name": "Actress", "emoji": "🎭", "tagline": "Fun conversations"},

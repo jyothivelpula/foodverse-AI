@@ -29,7 +29,10 @@ def render() -> None:
             st.rerun()
         return
 
+    st.markdown('<div class="fv-menu-grid">', unsafe_allow_html=True)
     cols = st.columns(3)
     for idx, item in enumerate(items):
         with cols[idx % 3]:
-            render_food_card(item, compact=True)
+            with st.container(border=True):
+                render_food_card(item, compact=True)
+    st.markdown("</div>", unsafe_allow_html=True)

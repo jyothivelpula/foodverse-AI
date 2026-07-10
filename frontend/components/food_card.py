@@ -1,6 +1,8 @@
-"""Menu item card."""
+"""Menu item card — equal-height layout."""
 
 from __future__ import annotations
+
+import html
 
 import streamlit as st
 
@@ -15,40 +17,46 @@ def render_food_card(item: dict, compact: bool = False) -> None:
     favorites = st.session_state.setdefault("favorites", [])
     is_fav = item["id"] in favorites
     suffix = "c" if compact else "f"
+    name = html.escape(str(item["name"]))
+    meta = f"⭐ {rating}" if rating else html.escape(item.get("description") or " ")
+    price = format_currency(float(item["price"]))
 
-    with st.container(border=True):
-        st.markdown(
-            f"""
-            <div class="fv-card-emoji">{emoji}</div>
-            <h4>{item["name"]}</h4>
-            <div class="fv-meta">{"⭐ " + str(rating) if rating else (item.get("description") or "")}</div>
-            <div class="fv-price">{format_currency(float(item["price"]))}</div>
-            """,
-            unsafe_allow_html=True,
-        )
+    st.markdown(
+        f"""
+        <div class="fv-food-card">
+          <div class="fv-card-emoji">{emoji}</div>
+          <div class="fv-food-body">
+            <h4 class="fv-food-title">{name}</h4>
+            <div class="fv-meta">{meta}</div>
+            <div class="fv-price">{price}</div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-        if not compact and item.get("description") and rating:
-            st.caption(item["description"])
+    if not compact and item.get("description") and rating:
+        st.caption(item["description"])
 
-        b1, b2 = st.columns(2)
-        with b1:
-            if st.button(
-                "+ Cart" if available else "Unavailable",
-                key=f"add_{item['id']}_{suffix}",
-                disabled=not available,
-                use_container_width=True,
-                type="primary",
-            ):
-                add_to_cart(item, 1)
-                st.toast(f"Added {item['name']} to cart")
-        with b2:
-            if st.button(
-                "❤️" if is_fav else "🤍",
-                key=f"fav_{item['id']}_{suffix}",
-                use_container_width=True,
-            ):
-                if is_fav:
-                    st.session_state.favorites = [fid for fid in favorites if fid != item["id"]]
-                else:
-                    st.session_state.favorites = [*favorites, item["id"]]
-                st.rerun()
+    b1, b2 = st.columns(2)
+    with b1:
+        if st.button(
+            "+ Add to Cart" if available else "Unavailable",
+            key=f"add_{item['id']}_{suffix}",
+            disabled=not available,
+            use_container_width=True,
+            type="primary",
+        ):
+            add_to_cart(item, 1)
+            st.toast(f"Added {item['name']} to cart")
+    with b2:
+        if st.button(
+            "❤️" if is_fav else "🤍",
+            key=f"fav_{item['id']}_{suffix}",
+            use_container_width=True,
+        ):
+            if is_fav:
+                st.session_state.favorites = [fid for fid in favorites if fid != item["id"]]
+            else:
+                st.session_state.favorites = [*favorites, item["id"]]
+            st.rerun()
