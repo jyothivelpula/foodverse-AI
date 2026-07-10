@@ -12,6 +12,9 @@ def render_food_card(item: dict, compact: bool = False) -> None:
     emoji = item.get("emoji") or "🍽️"
     rating = item.get("rating")
     available = bool(item.get("is_available", True))
+    favorites = st.session_state.setdefault("favorites", [])
+    is_fav = item["id"] in favorites
+    suffix = "c" if compact else "f"
 
     with st.container(border=True):
         st.markdown(
@@ -27,12 +30,25 @@ def render_food_card(item: dict, compact: bool = False) -> None:
         if not compact and item.get("description") and rating:
             st.caption(item["description"])
 
-        if st.button(
-            "+ Cart" if available else "Unavailable",
-            key=f"add_{item['id']}_{'c' if compact else 'f'}",
-            disabled=not available,
-            use_container_width=True,
-            type="primary",
-        ):
-            add_to_cart(item, 1)
-            st.toast(f"Added {item['name']} to cart")
+        b1, b2 = st.columns(2)
+        with b1:
+            if st.button(
+                "+ Cart" if available else "Unavailable",
+                key=f"add_{item['id']}_{suffix}",
+                disabled=not available,
+                use_container_width=True,
+                type="primary",
+            ):
+                add_to_cart(item, 1)
+                st.toast(f"Added {item['name']} to cart")
+        with b2:
+            if st.button(
+                "❤️" if is_fav else "🤍",
+                key=f"fav_{item['id']}_{suffix}",
+                use_container_width=True,
+            ):
+                if is_fav:
+                    st.session_state.favorites = [fid for fid in favorites if fid != item["id"]]
+                else:
+                    st.session_state.favorites = [*favorites, item["id"]]
+                st.rerun()

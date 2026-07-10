@@ -7,12 +7,24 @@ import streamlit as st
 from utils.constants import DEMO_MENU_ITEMS, DEFAULT_PERSONAS
 
 
+_PERSONA_ALIASES = {
+    "comedian": "actress",
+    "business_mentor": "ceo",
+    "best_friend": "girlfriend",
+    "music_lover": "singer",
+    "travel_guide": "traveller",
+    "study_buddy": "teacher",
+    "story_teller": "director",
+    "gamer": "footballer",
+}
+
+
 def init_session() -> None:
     defaults = {
         "page": "home",
         "cart": [],
         "customer": {
-            "name": "",
+            "name": "Jyothi",
             "phone": "",
             "email": "",
             "address": "",
@@ -20,9 +32,18 @@ def init_session() -> None:
         "active_order_id": None,
         "order_stage_index": 0,
         "selected_persona": DEFAULT_PERSONAS[0]["key"],
+        "lounge_view": "gallery",
+        "lounge_category": "all",
         "chat_by_persona": {},
         "menu_items": DEMO_MENU_ITEMS.copy(),
         "reviews": [],
+        "favorites": [],
+        "settings": {
+            "notifications": True,
+            "order_updates": True,
+            "ai_suggestions": True,
+            "default_lounge": "gallery",
+        },
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -33,6 +54,11 @@ def init_session() -> None:
         persona = st.session_state.selected_persona
         st.session_state.chat_by_persona.setdefault(persona, list(st.session_state.chat_messages))
         st.session_state.chat_messages = []
+
+    # Remap legacy persona keys from earlier builds
+    selected = st.session_state.get("selected_persona")
+    if selected in _PERSONA_ALIASES:
+        st.session_state.selected_persona = _PERSONA_ALIASES[selected]
 
 
 def get_cart() -> list[dict]:

@@ -7,17 +7,28 @@ from pathlib import Path
 
 import streamlit as st
 
-# Ensure `frontend/` is on sys.path when launched via `streamlit run app.py`
 ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from components.footer import render_footer
-from components.navbar import render_navbar
+from components.sidebar import render_sidebar
+from components.topbar import render_topbar
 from config import APP_TITLE
 from utils.helpers import load_css
 from utils.session import init_session
-from views import ai_lounge, cart, checkout, home, menu, order_tracking, profile, reviews
+from views import (
+    ai_lounge,
+    cart,
+    checkout,
+    favorites,
+    home,
+    menu,
+    order_tracking,
+    profile,
+    reviews,
+    settings,
+)
 
 
 PAGE_RENDERERS = {
@@ -27,9 +38,11 @@ PAGE_RENDERERS = {
     "checkout": checkout.render,
     "order_tracking": order_tracking.render,
     "ai_lounge": ai_lounge.render,
-    "chat": ai_lounge.render,  # legacy alias → AI Lounge
+    "chat": ai_lounge.render,
     "reviews": reviews.render,
     "profile": profile.render,
+    "favorites": favorites.render,
+    "settings": settings.render,
 }
 
 
@@ -38,32 +51,39 @@ def main() -> None:
         page_title=APP_TITLE,
         page_icon="🍽️",
         layout="wide",
-        initial_sidebar_state="collapsed",
+        initial_sidebar_state="expanded",
     )
     init_session()
-
-    st.markdown(
-        """
-        <style>
-          [data-testid="stAppViewContainer"] { color-scheme: light; }
-          [data-testid="stSidebar"],
-          [data-testid="stSidebarNav"],
-          section[data-testid="stSidebar"] { display: none !important; }
-          [data-testid="collapsedControl"] { display: none !important; }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
 
     css = load_css()
     if css:
         st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
-    # Normalize old "chat" page to AI Lounge
+    # Force slim sidebar — Streamlit often overrides width from stylesheet alone
+    st.markdown(
+        """
+        <style>
+          section[data-testid="stSidebar"],
+          section[data-testid="stSidebar"] > div:first-child {
+            width: 230px !important;
+            min-width: 230px !important;
+            max-width: 230px !important;
+          }
+          [data-testid="stSidebar"][aria-expanded="true"] {
+            min-width: 230px !important;
+            max-width: 230px !important;
+          }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     if st.session_state.get("page") == "chat":
         st.session_state.page = "ai_lounge"
+        st.session_state.lounge_view = "chat"
 
-    render_navbar()
+    render_sidebar()
+    render_topbar()
 
     page = st.session_state.get("page", "home")
     renderer = PAGE_RENDERERS.get(page, home.render)
