@@ -30,7 +30,7 @@
   --fv-gap-section: 64px;
   --fv-gap-cards: 24px;
 
-  --fv-sidebar-width: 240px;
+  --fv-sidebar-width: 248px;
   --fv-sidebar-collapsed: 72px;
   --fv-font: "Poppins", "Inter", system-ui, sans-serif;
 
@@ -112,28 +112,28 @@ p, .fv-desc, .fv-hero-lead {
   color: var(--fv-secondary) !important;
 }
 
-/* ═══════════════ SIDEBAR — premium, high-contrast ═══════════════ */
+/* ═══════════════ SIDEBAR — clear, scannable nav ═══════════════ */
 section[data-testid="stSidebar"] {
-  background: #111827 !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
-  min-width: 240px !important;
-  max-width: 240px !important;
-  width: 240px !important;
+  background: #0b1220 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  min-width: 248px !important;
+  max-width: 248px !important;
+  width: 248px !important;
 }
 
 section[data-testid="stSidebar"] > div:first-child {
-  width: 240px !important;
-  min-width: 240px !important;
-  max-width: 240px !important;
+  width: 248px !important;
+  min-width: 248px !important;
+  max-width: 248px !important;
 }
 
 section[data-testid="stSidebar"] [data-testid="stSidebarContent"],
 section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
-  padding: 18px 14px 24px !important;
-  background: #111827 !important;
+  padding: 16px 12px 20px !important;
+  background: #0b1220 !important;
 }
 
-section[data-testid="stSidebar"] > div { padding-top: 0.35rem; }
+section[data-testid="stSidebar"] > div { padding-top: 0.25rem; }
 
 section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
   color: #e5e7eb;
@@ -141,26 +141,31 @@ section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
 
 .fv-side-brand {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  text-align: center;
-  gap: 0.4rem;
-  padding: 0.5rem 0.35rem 1.05rem;
+  text-align: left;
+  gap: 0.75rem;
+  padding: 0.55rem 0.55rem 1rem;
 }
 
 .fv-side-logo {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 12px;
   display: grid;
   place-items: center;
-  font-size: 1.35rem;
-  background: rgba(255, 107, 53, 0.12);
-  border: 1px solid rgba(255, 107, 53, 0.22);
+  font-size: 1.25rem;
+  background: linear-gradient(145deg, rgba(255, 107, 53, 0.22), rgba(255, 107, 53, 0.08));
+  border: 1px solid rgba(255, 107, 53, 0.35);
+  flex-shrink: 0;
+}
+
+.fv-side-brand-text {
+  min-width: 0;
 }
 
 .fv-side-title {
-  font-size: 1.12rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: #ffffff;
   line-height: 1.15;
@@ -168,80 +173,91 @@ section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
 }
 
 .fv-side-sub {
-  font-size: 0.75rem;
-  color: #e5e7eb;
-  margin-top: 0.15rem;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  margin-top: 0.2rem;
   font-weight: 500;
 }
 
 .fv-side-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 0.65rem 0 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0.45rem 0.35rem 0.65rem;
+}
+
+.fv-side-spacer {
+  height: 1.25rem;
 }
 
 .fv-nav-section-label {
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  color: #9ca3af;
-  padding: 0.15rem 0.75rem 0.55rem;
+  letter-spacing: 0.12em;
+  color: #64748b;
+  padding: 0.2rem 0.7rem 0.5rem;
   text-transform: uppercase;
 }
 
-/* Aligned rows: dot | label */
+.fv-nav-badge-slot {
+  display: none;
+}
+
+/* Nav rows */
 section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"] {
   gap: 0 !important;
   align-items: center !important;
-  min-height: 48px;
-  margin-bottom: 4px;
-  padding: 0 8px 0 4px;
+  min-height: 46px;
+  margin-bottom: 5px;
+  padding: 0 6px 0 4px;
   border-radius: 12px;
   background: transparent;
-  transition: background 0.18s ease;
+  border: 1px solid transparent;
+  position: relative;
+  transition: background 0.16s ease, border-color 0.16s ease;
 }
 
 section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:has(button[kind="primary"]) {
-  background: #1f2937 !important;
+  background: rgba(255, 107, 53, 0.12) !important;
+  border-color: rgba(255, 107, 53, 0.28) !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:has(button[kind="primary"])::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: #ff6b35;
 }
 
 section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:hover {
-  background: #374151;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:has(button[kind="primary"]):hover {
-  background: #374151 !important;
+  background: rgba(255, 107, 53, 0.16) !important;
+  border-color: rgba(255, 107, 53, 0.35) !important;
 }
 
-/* Inactive ○ / Active ⬤ — same X every row */
-.fv-nav-dot {
+.fv-nav-icon {
   width: 36px;
-  height: 48px;
+  height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1rem;
+  opacity: 0.85;
   flex-shrink: 0;
 }
 
-.fv-nav-dot::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1.5px solid #d1d5db;
-  background: transparent;
-  box-sizing: border-box;
+.fv-nav-icon.is-active {
+  opacity: 1;
 }
 
-.fv-nav-dot.is-active::before {
-  width: 8px;
-  height: 8px;
-  border: none;
-  background: #ff6b35;
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.22);
-}
-
-/* Label buttons — force white on button + nested label text */
+/* Label buttons — white text, clean hit area */
 section[data-testid="stSidebar"] div[data-testid="stButton"] {
   margin: 0 !important;
 }
@@ -250,19 +266,19 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button,
 section[data-testid="stSidebar"] div[data-testid="stButton"] button[kind="secondary"],
 section[data-testid="stSidebar"] div[data-testid="stButton"] button[kind="primary"] {
   width: 100% !important;
-  height: 48px !important;
-  min-height: 48px !important;
-  max-height: 48px !important;
-  padding: 12px 8px 12px 2px !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
+  padding: 10px 8px 10px 2px !important;
   box-sizing: border-box !important;
   background: transparent !important;
   color: #ffffff !important;
   border: none !important;
   justify-content: flex-start !important;
   text-align: left !important;
-  border-radius: 0 12px 12px 0 !important;
+  border-radius: 0 10px 10px 0 !important;
   font-weight: 600 !important;
-  font-size: 0.92rem !important;
+  font-size: 0.9rem !important;
   line-height: 1 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
@@ -271,6 +287,7 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button[kind="primar
 
 section[data-testid="stSidebar"] div[data-testid="stButton"] button[kind="primary"] {
   font-weight: 700 !important;
+  color: #ffffff !important;
 }
 
 section[data-testid="stSidebar"] div[data-testid="stButton"] button:hover,
@@ -292,21 +309,27 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button div {
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  padding: 12px 12px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .fv-side-user-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
   display: grid;
   place-items: center;
-  background: #1f2937;
+  background: linear-gradient(145deg, #ff6b35, #ff814d);
+  color: #fff;
   font-size: 0.95rem;
+  font-weight: 700;
   flex-shrink: 0;
+}
+
+.fv-side-user-meta {
+  min-width: 0;
 }
 
 .fv-side-user-name {
@@ -321,8 +344,8 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button div {
   align-items: center;
   gap: 0.35rem;
   font-size: 0.72rem;
-  color: #e5e7eb;
-  margin-top: 0.15rem;
+  color: #94a3b8;
+  margin-top: 0.18rem;
 }
 
 .fv-side-user-status .fv-online-dot {
@@ -379,7 +402,499 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button div {
   border-color: var(--fv-border) !important;
 }
 
-/* ═══════════════ HERO (soft peach, not loud orange) ═══════════════ */
+/* ═══════════════ DASHBOARD / HOME ═══════════════ */
+@keyframes fv-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fv-home-hero-wrap {
+  width: 95%;
+  max-width: none;
+  margin: 0.25rem auto 0;
+  position: relative;
+}
+
+.fv-home-hero {
+  position: relative;
+  overflow: hidden;
+  height: 420px;
+  min-height: 420px;
+  border-radius: 22px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14);
+  animation: fv-fade-up 0.55s ease both;
+}
+
+.fv-home-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    url("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=2400&q=90")
+    center / cover no-repeat;
+  animation: fv-hero-ken 12s ease-out both;
+}
+
+@keyframes fv-hero-ken {
+  from { transform: scale(1.07); }
+  to { transform: scale(1.01); }
+}
+
+.fv-home-hero-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.52) 45%,
+    rgba(0, 0, 0, 0.28) 100%
+  );
+  pointer-events: none;
+}
+
+.fv-home-hero-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  max-width: 560px;
+  padding: 48px 48px 88px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.fv-home-brand {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  line-height: 1.1;
+  margin-bottom: 0.55rem;
+}
+
+.fv-home-headline {
+  margin: 0 0 0.75rem !important;
+  font-size: clamp(1.65rem, 2.6vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.03em;
+  color: #ffffff !important;
+  line-height: 1.2 !important;
+}
+
+.fv-home-lead {
+  margin: 0 0 1.15rem !important;
+  max-width: 480px;
+  font-size: 1.05rem !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+  line-height: 1.5 !important;
+}
+
+.fv-home-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.15rem;
+  margin: 0;
+}
+
+.fv-home-stat {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: 0.01em;
+}
+
+/* Identical CTAs — same box, only colors differ */
+.fv-home-hero-cta {
+  width: 95%;
+  max-width: none;
+  margin: -2rem auto 2.25rem;
+  padding: 0 48px;
+  position: relative;
+  z-index: 4;
+  box-sizing: border-box;
+  animation: fv-fade-up 0.55s 0.08s ease both;
+}
+
+.fv-home-hero-cta [data-testid="stHorizontalBlock"] {
+  gap: 0.85rem !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+}
+
+.fv-home-hero-cta [data-testid="column"]:nth-child(1),
+.fv-home-hero-cta [data-testid="column"]:nth-child(2) {
+  flex: 0 0 220px !important;
+  width: 220px !important;
+  min-width: 220px !important;
+  max-width: 220px !important;
+}
+
+.fv-home-hero-cta [data-testid="column"]:nth-child(3) {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+.fv-home-cta-btn {
+  width: 220px !important;
+  height: 52px !important;
+}
+
+.fv-home-hero-cta .fv-home-cta-btn div[data-testid="stButton"] {
+  width: 220px !important;
+  min-width: 220px !important;
+  max-width: 220px !important;
+  height: 52px !important;
+  margin: 0 !important;
+}
+
+.fv-home-hero-cta .fv-home-cta-btn div[data-testid="stButton"] > button {
+  box-sizing: border-box !important;
+  width: 220px !important;
+  min-width: 220px !important;
+  max-width: 220px !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 16px !important;
+  margin: 0 !important;
+  border-radius: 16px !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  line-height: 52px !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16) !important;
+}
+
+.fv-home-hero-cta .fv-home-cta-btn div[data-testid="stButton"] > button > div,
+.fv-home-hero-cta .fv-home-cta-btn div[data-testid="stButton"] > button p,
+.fv-home-hero-cta .fv-home-cta-btn div[data-testid="stButton"] > button span {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Primary — orange fill */
+.fv-home-hero-cta .fv-home-cta-primary div[data-testid="stButton"] > button {
+  background: #ff6b35 !important;
+  border-color: #ff6b35 !important;
+  color: #ffffff !important;
+}
+
+.fv-home-hero-cta .fv-home-cta-primary div[data-testid="stButton"] > button:hover {
+  background: #ff814d !important;
+  border-color: #ff814d !important;
+  color: #ffffff !important;
+}
+
+.fv-home-hero-cta .fv-home-cta-primary div[data-testid="stButton"] > button * {
+  color: #ffffff !important;
+}
+
+/* Secondary — white fill, dark text */
+.fv-home-hero-cta .fv-home-cta-secondary div[data-testid="stButton"] > button {
+  background: #ffffff !important;
+  border-color: #e5e7eb !important;
+  color: #0f172a !important;
+}
+
+.fv-home-hero-cta .fv-home-cta-secondary div[data-testid="stButton"] > button:hover {
+  background: #f8fafc !important;
+  border-color: #e5e7eb !important;
+  color: #0f172a !important;
+}
+
+.fv-home-hero-cta .fv-home-cta-secondary div[data-testid="stButton"] > button * {
+  color: #0f172a !important;
+}
+
+/* Dual destination paths */
+.fv-home-path {
+  background: var(--fv-card);
+  border: 1px solid var(--fv-border);
+  border-radius: 22px;
+  padding: 1.6rem 1.5rem 1.15rem;
+  min-height: 168px;
+  box-shadow: var(--fv-shadow);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  animation: fv-fade-up 0.6s 0.06s ease both;
+}
+
+.fv-home-path:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--fv-shadow-hover);
+}
+
+.fv-home-path-order {
+  background:
+    linear-gradient(160deg, #fff8f4 0%, #ffffff 55%),
+    var(--fv-card);
+  border-color: #f3ddd2;
+}
+
+.fv-home-path-ai {
+  background:
+    linear-gradient(160deg, #f6f2ff 0%, #ffffff 55%),
+    var(--fv-card);
+  border-color: #e4dcf8;
+}
+
+.fv-home-path-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.fv-home-path-order .fv-home-path-icon {
+  background: var(--fv-orange-soft);
+  color: var(--fv-primary);
+}
+
+.fv-home-path-ai .fv-home-path-icon {
+  background: var(--fv-ai-soft);
+  color: var(--fv-ai);
+}
+
+.fv-home-path-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--fv-heading);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+
+.fv-home-path-desc {
+  font-size: 0.92rem;
+  color: var(--fv-secondary);
+  line-height: 1.45;
+  max-width: 280px;
+}
+
+.fv-home-path-btn {
+  margin-top: 0.15rem;
+  margin-bottom: 0.35rem;
+}
+
+.fv-home-path-btn div[data-testid="stButton"] button {
+  height: 48px !important;
+  min-height: 48px !important;
+  border-radius: 14px !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+}
+
+.fv-home-path-btn-ai div[data-testid="stButton"] button {
+  background: var(--fv-ai) !important;
+  border: 1px solid var(--fv-ai) !important;
+  color: #fff !important;
+}
+
+.fv-home-path-btn-ai div[data-testid="stButton"] button:hover {
+  background: #6d28d9 !important;
+  border-color: #6d28d9 !important;
+  color: #fff !important;
+}
+
+/* Subtle status strip — not a pill cluster */
+.fv-home-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 1.75rem 0 0.25rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--fv-border);
+  border-bottom: 1px solid var(--fv-border);
+  color: var(--fv-secondary);
+  font-size: 0.88rem;
+  animation: fv-fade-up 0.55s 0.12s ease both;
+}
+
+.fv-home-strip strong {
+  color: var(--fv-heading);
+  font-weight: 700;
+}
+
+.fv-home-strip-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #cbd5e1;
+}
+
+/* Sections */
+.fv-home-section {
+  margin-top: 3.25rem;
+}
+
+.fv-home-section-row h3 {
+  margin: 0 0 0.3rem !important;
+  font-size: 1.45rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em;
+}
+
+.fv-home-section-row p {
+  margin: 0 0 1.25rem !important;
+  font-size: 0.95rem !important;
+  color: var(--fv-secondary) !important;
+}
+
+.fv-home-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.85rem;
+}
+
+.fv-home-more div[data-testid="stButton"] button {
+  background: transparent !important;
+  border: none !important;
+  color: var(--fv-primary) !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+  min-height: 40px !important;
+}
+
+.fv-home-more div[data-testid="stButton"] button:hover {
+  color: var(--fv-hover) !important;
+  background: transparent !important;
+}
+
+/* Category buttons as clean tiles */
+.fv-home-cat div[data-testid="stButton"] button {
+  height: 72px !important;
+  min-height: 72px !important;
+  border-radius: 16px !important;
+  background: var(--fv-card) !important;
+  border: 1px solid var(--fv-border) !important;
+  color: var(--fv-heading) !important;
+  font-weight: 600 !important;
+  font-size: 0.92rem !important;
+  box-shadow: var(--fv-shadow) !important;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+.fv-home-cat div[data-testid="stButton"] button:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 107, 53, 0.4) !important;
+  box-shadow: var(--fv-shadow-hover) !important;
+  background: #fffaf7 !important;
+  color: var(--fv-heading) !important;
+}
+
+/* AI banner */
+.fv-home-ai-banner {
+  background:
+    linear-gradient(115deg, #f4f0ff 0%, #ffffff 48%, #fff7f2 100%);
+  border: 1px solid #e8e2f6;
+  border-radius: 22px;
+  padding: 1.75rem 1.85rem;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+  animation: fv-fade-up 0.55s ease both;
+}
+
+.fv-home-ai-banner::before {
+  content: "";
+  position: absolute;
+  right: -30px;
+  bottom: -50px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(124, 58, 237, 0.1);
+  pointer-events: none;
+}
+
+.fv-home-ai-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fv-ai);
+  margin-bottom: 0.45rem;
+}
+
+.fv-home-ai-copy h3 {
+  margin: 0 0 0.35rem !important;
+  font-size: 1.4rem !important;
+}
+
+.fv-home-ai-copy p {
+  margin: 0 0 1rem !important;
+  font-size: 0.95rem !important;
+  color: var(--fv-secondary) !important;
+  max-width: 460px;
+}
+
+.fv-home-faces {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.fv-home-face {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: inline-grid;
+  place-items: center;
+  background: #fff;
+  border: 1px solid var(--fv-border);
+  font-size: 1.1rem;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  transition: transform 0.18s ease;
+}
+
+.fv-home-face:hover {
+  transform: translateY(-2px);
+}
+
+.fv-home-ai-cta div[data-testid="stButton"] button {
+  height: 44px !important;
+  min-height: 44px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 0.86rem !important;
+  background: var(--fv-card) !important;
+  border: 1px solid var(--fv-border) !important;
+  color: var(--fv-heading) !important;
+}
+
+.fv-home-ai-cta div[data-testid="stButton"] button:hover {
+  border-color: rgba(124, 58, 237, 0.35) !important;
+  background: #faf8ff !important;
+  color: var(--fv-heading) !important;
+}
+
+.fv-home-ai-all div[data-testid="stButton"] button {
+  background: var(--fv-ai) !important;
+  border-color: var(--fv-ai) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+.fv-home-ai-all div[data-testid="stButton"] button:hover {
+  background: #6d28d9 !important;
+  border-color: #6d28d9 !important;
+  color: #fff !important;
+}
+
+/* Legacy hero (other pages) */
 .fv-hero {
   background: linear-gradient(165deg, #fff7f3 0%, #ffe8dd 100%);
   border: 1px solid #f3ddd2;
@@ -388,18 +903,6 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button div {
   text-align: left;
   box-shadow: var(--fv-shadow);
   margin: 0 0 var(--fv-gap-section);
-}
-
-.fv-hero-kicker {
-  display: inline-block;
-  font-size: var(--fv-small);
-  font-weight: 600;
-  color: var(--fv-secondary);
-  background: rgba(15, 23, 42, 0.04);
-  border: 1px solid var(--fv-border);
-  border-radius: 999px;
-  padding: 0.35rem 0.85rem;
-  margin-bottom: 0.85rem;
 }
 
 .fv-hero h1 {
@@ -412,25 +915,6 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button div {
   max-width: 520px;
   font-size: var(--fv-subtitle) !important;
 }
-
-.fv-hero-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.fv-hero-stat {
-  background: var(--fv-card);
-  border: 1px solid var(--fv-border);
-  border-radius: 999px;
-  padding: 0.5rem 1rem;
-  font-size: var(--fv-desc);
-  font-weight: 600;
-  color: var(--fv-heading);
-  box-shadow: var(--fv-shadow);
-}
-
-.fv-hero-stat span { margin-right: 0.3rem; }
 
 /* ═══════════════ SECTIONS — 64px rhythm ═══════════════ */
 .fv-section {
@@ -446,6 +930,22 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button div {
   margin: 0 !important;
   font-size: var(--fv-section) !important;
   font-weight: 700 !important;
+}
+
+.fv-section-head {
+  margin: 0 0 1.5rem;
+}
+
+.fv-section-head h3 {
+  margin: 0 0 0.35rem !important;
+  font-size: var(--fv-section) !important;
+  font-weight: 700 !important;
+}
+
+.fv-section-head p {
+  margin: 0 !important;
+  font-size: var(--fv-desc) !important;
+  color: var(--fv-secondary) !important;
 }
 
 .fv-page-head {
@@ -765,7 +1265,8 @@ div[data-testid="stVerticalBlockBorderWrapper"]:has(.fv-food-card) .fv-price {
 }
 
 [data-testid="column"]:has(.fv-persona-card) div[data-testid="stButton"] button,
-[data-testid="column"]:has(.fv-persona-mini) div[data-testid="stButton"] button {
+[data-testid="column"]:has(.fv-persona-mini) div[data-testid="stButton"] button,
+[data-testid="column"]:has(.fv-dash-persona) div[data-testid="stButton"] button {
   min-height: 40px !important;
   height: 40px !important;
   padding: 0.35rem 0.9rem !important;
@@ -779,7 +1280,8 @@ div[data-testid="stVerticalBlockBorderWrapper"]:has(.fv-food-card) .fv-price {
 }
 
 [data-testid="column"]:has(.fv-persona-card) div[data-testid="stButton"] button:hover,
-[data-testid="column"]:has(.fv-persona-mini) div[data-testid="stButton"] button:hover {
+[data-testid="column"]:has(.fv-persona-mini) div[data-testid="stButton"] button:hover,
+[data-testid="column"]:has(.fv-dash-persona) div[data-testid="stButton"] button:hover {
   background: rgba(124, 58, 237, 0.18) !important;
   border-color: rgba(124, 58, 237, 0.4) !important;
   color: #6d28d9 !important;
@@ -907,6 +1409,46 @@ input, textarea, [data-baseweb="input"] input {
     max-width: 96% !important;
   }
 
+  .fv-home-hero-wrap,
+  .fv-home-hero-cta {
+    width: 100%;
+  }
+
+  .fv-home-hero {
+    height: 400px;
+    min-height: 400px;
+  }
+
+  .fv-home-hero-inner {
+    padding: 36px 24px 80px;
+    max-width: 100%;
+  }
+
+  .fv-home-hero-cta {
+    margin-top: -1.7rem;
+    padding: 0 24px;
+  }
+
+  .fv-home-hero-cta [data-testid="column"]:nth-child(1),
+  .fv-home-hero-cta [data-testid="column"]:nth-child(2),
+  .fv-home-hero-cta .fv-home-cta-btn,
+  .fv-home-hero-cta .fv-home-cta-btn div[data-testid="stButton"],
+  .fv-home-hero-cta .fv-home-cta-btn div[data-testid="stButton"] > button {
+    flex-basis: 220px !important;
+    width: 220px !important;
+    min-width: 220px !important;
+    max-width: 220px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    border-radius: 16px !important;
+  }
+
+  .fv-home-path {
+    min-height: 140px;
+    padding: 1.25rem 1.15rem 1rem;
+  }
+
   .fv-hero {
     padding: 32px 24px;
   }
@@ -921,8 +1463,8 @@ input, textarea, [data-baseweb="input"] input {
   }
 
   section[data-testid="stSidebar"] {
-    min-width: 240px !important;
-    max-width: 240px !important;
-    width: 240px !important;
+    min-width: 248px !important;
+    max-width: 248px !important;
+    width: 248px !important;
   }
 }

@@ -1,41 +1,46 @@
-"""Premium sidebar — no emoji nav icons, orange active dot."""
+"""Premium sidebar — clear icons, active accent, cart badge."""
 
 from __future__ import annotations
 
+import html
+
 import streamlit as st
 
-from utils.session import set_page
+from utils.helpers import cart_item_count
+from utils.session import get_cart, set_page
 
 NAV_MAIN = [
-    ("home", "Dashboard"),
-    ("menu", "Menu"),
-    ("ai_lounge", "AI Lounge"),
-    ("cart", "Cart"),
-    ("order_tracking", "Orders"),
+    ("home", "🏠", "Dashboard"),
+    ("menu", "🍽", "Menu"),
+    ("ai_lounge", "✦", "AI Lounge"),
+    ("cart", "🛒", "Cart"),
+    ("order_tracking", "📦", "Orders"),
 ]
 
 NAV_ACCOUNT = [
-    ("profile", "Profile"),
-    ("settings", "Settings"),
+    ("profile", "👤", "Profile"),
+    ("settings", "⚙", "Settings"),
 ]
 
 
-def _nav_item(key: str, label: str, current: str) -> None:
+def _nav_item(key: str, icon: str, label: str, current: str, badge: str = "") -> None:
     is_active = current == key
     active_cls = " is-active" if is_active else ""
+    badge_html = f'<span class="fv-nav-badge">{html.escape(badge)}</span>' if badge else ""
 
     st.markdown(f'<div class="fv-nav-row{active_cls}">', unsafe_allow_html=True)
-    dot_col, label_col = st.columns([0.7, 4.0], vertical_alignment="center")
+    icon_col, label_col = st.columns([0.85, 4.0], vertical_alignment="center")
 
-    with dot_col:
+    with icon_col:
         st.markdown(
-            f'<div class="fv-nav-dot{active_cls}" aria-hidden="true"></div>',
+            f'<div class="fv-nav-icon{active_cls}" aria-hidden="true">{icon}</div>',
             unsafe_allow_html=True,
         )
 
     with label_col:
+        btn_label = f"{label}  {badge}" if badge else label
         if st.button(
-            label,
+            btn_label,
             key=f"side_nav_{key}",
             use_container_width=True,
             type="primary" if is_active else "secondary",
@@ -46,23 +51,32 @@ def _nav_item(key: str, label: str, current: str) -> None:
             set_page(key)
             st.rerun()
 
+    # Visual badge marker for CSS targeting (cart count shown in button text too)
+    if badge_html:
+        st.markdown(
+            f'<div class="fv-nav-badge-slot">{badge_html}</div>',
+            unsafe_allow_html=True,
+        )
+
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-def _section(title: str, items: list[tuple[str, str]], current: str) -> None:
+def _section(title: str, items: list[tuple[str, str, str]], current: str, cart_n: int = 0) -> None:
     st.markdown(
         f'<div class="fv-nav-section-label">{title}</div>',
         unsafe_allow_html=True,
     )
-    for key, label in items:
-        _nav_item(key, label, current)
+    for key, icon, label in items:
+        badge = str(cart_n) if key == "cart" and cart_n > 0 else ""
+        _nav_item(key, icon, label, current, badge=badge)
 
 
 def render_sidebar() -> None:
     current = st.session_state.get("page", "home")
     customer = st.session_state.get("customer") or {}
     name = (customer.get("name") or "").strip() or "Guest"
-    first = name.split()[0]
+    first = html.escape(name.split()[0])
+    cart_n = cart_item_count(get_cart())
 
     with st.sidebar:
         st.markdown(
@@ -79,17 +93,17 @@ def render_sidebar() -> None:
         )
 
         st.markdown('<div class="fv-side-divider"></div>', unsafe_allow_html=True)
-        _section("MAIN", NAV_MAIN, current)
+        _section("MAIN", NAV_MAIN, current, cart_n=cart_n)
 
         st.markdown('<div class="fv-side-divider"></div>', unsafe_allow_html=True)
         _section("ACCOUNT", NAV_ACCOUNT, current)
 
-        st.markdown('<div class="fv-side-divider"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="fv-side-spacer"></div>', unsafe_allow_html=True)
         st.markdown(
             f"""
             <div class="fv-side-user">
-              <div class="fv-side-user-avatar">👤</div>
-              <div>
+              <div class="fv-side-user-avatar">{first[:1].upper()}</div>
+              <div class="fv-side-user-meta">
                 <div class="fv-side-user-name">{first}</div>
                 <div class="fv-side-user-status">
                   <span class="fv-online-dot"></span> Online

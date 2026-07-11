@@ -59,20 +59,20 @@ def main() -> None:
     if css:
         st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
-    # Fixed 240px sidebar
+    # Fixed 248px sidebar
     st.markdown(
         """
         <style>
           section[data-testid="stSidebar"],
           section[data-testid="stSidebar"] > div:first-child {
-            width: 240px !important;
-            min-width: 240px !important;
-            max-width: 240px !important;
+            width: 248px !important;
+            min-width: 248px !important;
+            max-width: 248px !important;
           }
           [data-testid="stSidebar"][aria-expanded="true"] {
-            min-width: 240px !important;
-            max-width: 240px !important;
-            width: 240px !important;
+            min-width: 248px !important;
+            max-width: 248px !important;
+            width: 248px !important;
           }
         </style>
         """,
