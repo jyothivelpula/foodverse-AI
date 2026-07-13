@@ -2,6 +2,10 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { MENU_ITEMS } from '../data/menu'
 import { PERSONAS } from '../data/personas'
+import {
+  DEFAULT_ESTIMATED_MINUTES,
+  saveOrderTimer,
+} from '../utils/orderTimer'
 
 export const useStore = create(
   persist(
@@ -16,6 +20,10 @@ export const useStore = create(
       },
       activeOrderId: null,
       orderStageIndex: 0,
+      orderStartedAt: null,
+      orderDurationSec: DEFAULT_ESTIMATED_MINUTES * 60,
+      lastOrderItems: [],
+      lastOrderTotal: 0,
       selectedPersona: PERSONAS[0].key,
       chatByPersona: {},
       reviews: [],
@@ -61,20 +69,28 @@ export const useStore = create(
 
       setCustomer: (patch) => set({ customer: { ...get().customer, ...patch } }),
 
-      placeOrder: () => {
+      placeOrder: (estimatedMinutes = DEFAULT_ESTIMATED_MINUTES) => {
         const id = `FV-${crypto.randomUUID().slice(0, 8).toUpperCase()}`
+        const items = get().cart.map((c) => ({ ...c }))
+        const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+        const startedAt = Date.now()
+        const durationSec = Math.max(1, Math.round(estimatedMinutes * 60))
+
+        saveOrderTimer({ orderId: id, startedAt, durationSec })
+
         set({
           activeOrderId: id,
           orderStageIndex: 0,
+          orderStartedAt: startedAt,
+          orderDurationSec: durationSec,
+          lastOrderItems: items,
+          lastOrderTotal: total,
           cart: [],
         })
         return id
       },
 
-      nextOrderStage: () => {
-        const next = Math.min(get().orderStageIndex + 1, 4)
-        set({ orderStageIndex: next })
-      },
+      setOrderStageIndex: (index) => set({ orderStageIndex: index }),
 
       setPersona: (key) => set({ selectedPersona: key }),
 
@@ -110,6 +126,10 @@ export const useStore = create(
         customer: s.customer,
         activeOrderId: s.activeOrderId,
         orderStageIndex: s.orderStageIndex,
+        orderStartedAt: s.orderStartedAt,
+        orderDurationSec: s.orderDurationSec,
+        lastOrderItems: s.lastOrderItems,
+        lastOrderTotal: s.lastOrderTotal,
         selectedPersona: s.selectedPersona,
         chatByPersona: s.chatByPersona,
         reviews: s.reviews,
