@@ -15,10 +15,13 @@ def format_currency(amount: float, currency: str = "₹") -> str:
 
 
 def load_css() -> str:
-    css_path = STYLES_DIR / "style.css"
-    if not css_path.exists():
-        return ""
-    return css_path.read_text(encoding="utf-8")
+    parts: list[str] = []
+    # Base page styles first, design system last so SaaS tokens win
+    for name in ("style.css", "design_system.css"):
+        path = STYLES_DIR / name
+        if path.exists():
+            parts.append(path.read_text(encoding="utf-8"))
+    return "\n\n".join(parts)
 
 
 def logo_path() -> Path:

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import time
+
 import streamlit as st
 
 from api_client import api_client
@@ -41,6 +43,8 @@ def render_chatbot(*, show_back: bool = True) -> None:
     character = persona.get("character_name", persona["display_name"])
     full_label = f"{character} {persona['display_name']}"
 
+    online = bool(st.session_state.get("backend_online", False))
+
     left, mid, right = st.columns([1.1, 5.2, 1.7], vertical_alignment="center")
     with left:
         if show_back and st.button("←", key="chat_back_btn", use_container_width=True):
@@ -50,9 +54,14 @@ def render_chatbot(*, show_back: bool = True) -> None:
     with mid:
         st.markdown(f"### {persona['emoji']} {full_label}")
     with right:
-        st.caption("🟢 Online")
+        st.caption("🟢 API Online" if online else "🔴 API Offline")
 
     st.caption(persona["tagline"])
+    if not online:
+        st.warning(
+            "Cannot reach the backend at http://127.0.0.1:8000. "
+            "From the `backend` folder run: `python -m uvicorn app.main:app --reload`"
+        )
 
     # Native Streamlit chat messages
     if not messages:
@@ -81,10 +90,17 @@ def render_chatbot(*, show_back: bool = True) -> None:
             with st.spinner(f"{character} is typing..."):
                 try:
                     reply = _ask_ai(persona, prompt.strip(), history)
+                    st.session_state.backend_online = True
+                    st.session_state.backend_checked_at = time.monotonic()
                 except Exception as exc:  # noqa: BLE001
+                    st.session_state.backend_online = False
+                    st.session_state.backend_checked_at = time.monotonic()
                     reply = (
-                        "Aww, I couldn't reach the chat service right now 😅 "
-                        "Make sure the backend is running and GROQ_API_KEY is set.\n\n"
+                        "Couldn't reach the AI chat service.\n\n"
+                        "1. Open a terminal in the **backend** folder\n"
+                        "2. Run: `python -m uvicorn app.main:app --reload`\n"
+                        "3. Confirm http://127.0.0.1:8000/health returns ok\n"
+                        "4. Ensure `GROQ_API_KEY` is set in `backend/.env`\n\n"
                         f"Details: {exc}"
                     )
             st.markdown(reply)

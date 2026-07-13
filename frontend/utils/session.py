@@ -49,6 +49,9 @@ def init_session() -> None:
         if key not in st.session_state:
             st.session_state[key] = value
 
+    # Always refresh demo menu catalog (images, badges, prep times)
+    st.session_state.menu_items = [dict(item) for item in DEMO_MENU_ITEMS]
+
     # Migrate older single-list chat history if present
     if "chat_messages" in st.session_state and st.session_state.chat_messages:
         persona = st.session_state.selected_persona

@@ -6,25 +6,25 @@
    ═══════════════════════════════════════════ */
 
 :root {
-  --fv-primary: #ff6b35;
-  --fv-hover: #ff825a;
+  --fv-primary: #d9481c;
+  --fv-hover: #f05a2a;
   --fv-ai: #7c3aed;
   --fv-ai-soft: rgba(124, 58, 237, 0.12);
-  --fv-orange-soft: rgba(255, 107, 53, 0.14);
-  --fv-bg: #f8fafc;
+  --fv-orange-soft: rgba(217, 72, 28, 0.14);
+  --fv-bg: #fff8f1;
   --fv-card: #ffffff;
   --fv-sidebar: #111827;
-  --fv-heading: #0f172a;
-  --fv-secondary: #64748b;
-  --fv-border: #e5e7eb;
+  --fv-heading: #111827;
+  --fv-secondary: #6b7280;
+  --fv-border: #f0e6da;
   --fv-success: #22c55e;
 
-  --fv-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-  --fv-shadow-hover: 0 16px 36px rgba(15, 23, 42, 0.12);
+  --fv-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+  --fv-shadow-hover: 0 18px 44px rgba(17, 24, 39, 0.12);
 
-  --fv-radius: 20px;
+  --fv-radius: 24px;
   --fv-btn-h: 50px;
-  --fv-card-pad: 20px;
+  --fv-card-pad: 24px;
   --fv-nav-pad: 24px;
   --fv-hero-pad: 48px;
   --fv-gap-section: 64px;
@@ -32,7 +32,7 @@
 
   --fv-sidebar-width: 248px;
   --fv-sidebar-collapsed: 72px;
-  --fv-font: "Poppins", "Inter", system-ui, sans-serif;
+  --fv-font: "Plus Jakarta Sans", "Poppins", "Inter", system-ui, sans-serif;
 
   --fv-hero: 48px;
   --fv-subtitle: 18px;
@@ -420,8 +420,8 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button div {
   overflow: hidden;
   height: 420px;
   min-height: 420px;
-  border-radius: 22px;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14);
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(28, 25, 23, 0.12);
   animation: fv-fade-up 0.55s ease both;
 }
 
@@ -491,15 +491,24 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button div {
 .fv-home-stats {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.65rem 1.15rem;
+  gap: 8px 16px;
   margin: 0;
+  align-items: center;
 }
 
 .fv-home-stat {
-  font-size: 0.92rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.92);
   letter-spacing: 0.01em;
+}
+
+.fv-home-stat .fv-icon {
+  font-size: 18px !important;
+  color: #ffb089;
 }
 
 /* Identical CTAs — same box, only colors differ */
@@ -990,6 +999,65 @@ div[data-testid="stVerticalBlockBorderWrapper"]:hover {
   flex-shrink: 0;
 }
 
+/* Luxury food card (shared — menu injects richer cream theme) */
+.fv-lux-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.fv-lux-img {
+  width: 100%;
+  height: 168px;
+  object-fit: cover;
+  display: block;
+  border-radius: 20px 20px 0 0;
+  background: #f1f5f9;
+}
+
+.fv-lux-body {
+  padding: 0.85rem 0.15rem 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.fv-lux-title {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: var(--fv-heading) !important;
+  margin: 0 !important;
+  line-height: 1.25 !important;
+  min-height: 2.5em;
+}
+
+.fv-lux-desc {
+  font-size: 0.85rem;
+  color: var(--fv-secondary);
+  line-height: 1.4;
+  margin: 0;
+  min-height: 2.4em;
+}
+
+.fv-lux-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+}
+
+.fv-lux-rating {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--fv-secondary);
+}
+
+.fv-lux-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--fv-heading);
+}
+
 .fv-price {
   font-size: 1.15rem;
   font-weight: 700;
@@ -1000,7 +1068,7 @@ div[data-testid="stVerticalBlockBorderWrapper"]:hover {
 .fv-food-card {
   display: flex;
   flex-direction: column;
-  min-height: 220px;
+  min-height: 200px;
 }
 
 .fv-food-body {
@@ -1022,8 +1090,9 @@ div[data-testid="stVerticalBlockBorderWrapper"]:hover {
 }
 
 div[data-testid="stVerticalBlockBorderWrapper"]:has(.fv-food-card) {
-  min-height: 320px;
+  min-height: 360px;
   height: 100%;
+  overflow: hidden;
 }
 
 div[data-testid="stVerticalBlockBorderWrapper"]:has(.fv-food-card) .fv-meta {

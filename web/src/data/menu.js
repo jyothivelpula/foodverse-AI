@@ -1,0 +1,136 @@
+export const CATEGORIES = [
+  { id: 1, name: 'Indian' },
+  { id: 2, name: 'Italian' },
+  { id: 3, name: 'Asian' },
+  { id: 4, name: 'Healthy' },
+  { id: 5, name: 'Desserts' },
+  { id: 6, name: 'Drinks' },
+]
+
+export const MENU_ITEMS = [
+  {
+    id: 1,
+    categoryId: 1,
+    name: 'Hyderabadi Chicken Biryani',
+    description: 'Fragrant basmati, slow-cooked spices, tender chicken',
+    price: 289,
+    rating: 4.8,
+    badge: 'Spicy',
+    prepMin: 22,
+    featured: true,
+    image:
+      'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 2,
+    categoryId: 2,
+    name: 'Margherita Pizza',
+    description: 'Fresh basil, mozzarella, San Marzano tomato',
+    price: 349,
+    rating: 4.8,
+    badge: 'Veg',
+    prepMin: 18,
+    featured: true,
+    image:
+      'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 9,
+    categoryId: 3,
+    name: 'Spicy Chicken Wings',
+    description: 'Crispy glazed wings with chili heat',
+    price: 299,
+    rating: 4.7,
+    badge: 'Spicy',
+    prepMin: 18,
+    featured: true,
+    image:
+      'https://images.unsplash.com/photo-1608039755401-742074f0548d?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 3,
+    categoryId: 5,
+    name: 'Chocolate Lava Cake',
+    description: 'Warm cake with molten center',
+    price: 199,
+    rating: 4.9,
+    badge: 'Sweet',
+    prepMin: 15,
+    featured: true,
+    image:
+      'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 4,
+    categoryId: 3,
+    name: 'Spicy Ramen Bowl',
+    description: 'Rich broth, soft egg, chili oil',
+    price: 279,
+    rating: 4.7,
+    badge: 'Spicy',
+    prepMin: 20,
+    featured: false,
+    image:
+      'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 5,
+    categoryId: 4,
+    name: 'Garden Fresh Salad',
+    description: 'Greens, seeds, light dressing',
+    price: 189,
+    rating: 4.5,
+    badge: 'Veg',
+    prepMin: 12,
+    featured: false,
+    image:
+      'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 6,
+    categoryId: 6,
+    name: 'Mango Smoothie',
+    description: 'Fresh mango blend',
+    price: 129,
+    rating: 4.4,
+    badge: 'Veg',
+    prepMin: 8,
+    featured: false,
+    image:
+      'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 7,
+    categoryId: 1,
+    name: 'Butter Chicken',
+    description: 'Creamy tomato gravy with tender chicken',
+    price: 319,
+    rating: 4.8,
+    badge: 'Spicy',
+    prepMin: 25,
+    featured: false,
+    image:
+      'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    id: 8,
+    categoryId: 2,
+    name: 'Classic Cheese Burger',
+    description: 'Juicy patty with cheddar',
+    price: 259,
+    rating: 4.6,
+    badge: 'Classic',
+    prepMin: 16,
+    featured: false,
+    image:
+      'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80',
+  },
+]
+
+export const ORDER_STAGES = [
+  'Confirmed',
+  'Preparing',
+  'Cooking',
+  'Ready',
+  'Delivered',
+]

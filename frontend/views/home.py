@@ -1,4 +1,4 @@
-"""Dashboard — clean modern home focused on Order + AI paths."""
+"""Dashboard — Foodie Palace inspired home (frontend UI only)."""
 
 from __future__ import annotations
 
@@ -7,31 +7,77 @@ import html
 import streamlit as st
 
 from components.food_card import render_food_card
-from utils.constants import DEMO_CATEGORIES, HOME_PERSONAS
 from utils.session import set_page, set_persona
+
+HERO_BG = (
+    "https://images.unsplash.com/photo-1414235077428-338989a2e8c0"
+    "?auto=format&fit=crop&w=1600&q=80"
+)
+
+HOME_COMPANIONS = [
+    {
+        "key": "master_chef",
+        "emoji": "👨‍🍳",
+        "name": "Chef",
+        "role": "Cooking Expert",
+        "desc": "Pairings, techniques, and kitchen secrets while you wait.",
+    },
+    {
+        "key": "teacher",
+        "emoji": "📖",
+        "name": "Story Teller",
+        "role": "Food Historian",
+        "desc": "Origins and stories behind every dish on the table.",
+    },
+    {
+        "key": "actress",
+        "emoji": "🎭",
+        "name": "Comedian",
+        "role": "Fun Conversations",
+        "desc": "Light banter and laughs until your order arrives.",
+    },
+]
+
+
+def _featured_items() -> list[dict]:
+    items = list(st.session_state.get("menu_items") or [])
+    featured = [i for i in items if i.get("featured")]
+    return (featured or items)[:3]
 
 
 def render() -> None:
-    # ── Hero: wide primary banner ──
+    st.markdown('<div class="fv-page-main fv-fade">', unsafe_allow_html=True)
+
+    # ── Dark full-width hero ──
     st.markdown(
-        """
-        <div class="fv-home-hero-wrap">
-          <div class="fv-home-hero">
-            <div class="fv-home-hero-bg" aria-hidden="true"></div>
-            <div class="fv-home-hero-veil" aria-hidden="true"></div>
-            <div class="fv-home-hero-inner">
-              <div class="fv-home-brand">FoodVerse AI</div>
-              <h1 class="fv-home-headline">
-                Delicious Food Meets<br/>Intelligent AI
-              </h1>
-              <p class="fv-home-lead">
-                Craving something delicious? Order in a few taps, then chat with
-                an AI companion while your meal is on the way.
+        f"""
+        <div class="fv-hero-dark">
+          <img class="fv-hero-dark-bg" src="{html.escape(HERO_BG)}" alt="Restaurant ambience" />
+          <div class="fv-hero-dark-shade"></div>
+          <div class="fv-hero-dark-inner">
+            <div>
+              <div class="fv-hero-eyebrow">Smart Restaurant · AI Companion</div>
+              <h1 class="fv-hero-title">Order dinner.<br/>Wait with a <em>friend.</em></h1>
+              <p class="fv-hero-lead">
+                Every order unlocks the AI Lounge — chat with a Chef, a Mentor,
+                or a Story Teller while your meal is being prepared.
               </p>
-              <div class="fv-home-stats">
-                <span class="fv-home-stat">⭐ 4.9</span>
-                <span class="fv-home-stat">⚡ 15 min</span>
-                <span class="fv-home-stat">🤖 10 AI Companions</span>
+            </div>
+            <div class="fv-live-card">
+              <div class="fv-live-top">
+                <div class="fv-live-kicker">Live · Order #421</div>
+                <div class="fv-live-eta">18 min</div>
+              </div>
+              <div class="fv-live-title">Chef is cooking your ramen.</div>
+              <div class="fv-live-steps">
+                <div class="fv-live-step is-done"><span class="fv-live-dot"></span>Confirmed</div>
+                <div class="fv-live-step is-done"><span class="fv-live-dot"></span>Preparing</div>
+                <div class="fv-live-step is-active"><span class="fv-live-dot"></span>Cooking</div>
+                <div class="fv-live-step"><span class="fv-live-dot"></span>Out for delivery</div>
+              </div>
+              <div class="fv-live-chat">
+                <div class="fv-live-avatar">👨‍🍳</div>
+                <p><strong>Chef is chatting:</strong> “Want the secret to a 63° egg?”</p>
               </div>
             </div>
           </div>
@@ -40,124 +86,85 @@ def render() -> None:
         unsafe_allow_html=True,
     )
 
-    st.markdown('<div class="fv-home-hero-cta">', unsafe_allow_html=True)
-    c1, c2, _ = st.columns([1, 1, 6], gap="small")
+    st.markdown('<div class="fv-hero-actions">', unsafe_allow_html=True)
+    c1, c2, _ = st.columns([1.2, 1.35, 2.2])
     with c1:
-        st.markdown('<div class="fv-home-cta-btn fv-home-cta-primary">', unsafe_allow_html=True)
-        if st.button("🍕 Explore Menu →", key="home_order"):
+        st.markdown('<div class="fv-cta-pri">', unsafe_allow_html=True)
+        if st.button("Browse Menu", type="primary", use_container_width=True, key="home_order"):
             set_page("menu")
             st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
     with c2:
-        st.markdown('<div class="fv-home-cta-btn fv-home-cta-secondary">', unsafe_allow_html=True)
-        if st.button("🤖 AI Lounge →", key="home_ai"):
+        st.markdown('<div class="fv-cta-sec">', unsafe_allow_html=True)
+        if st.button("Meet AI Lounge", use_container_width=True, key="home_ai"):
             st.session_state.lounge_view = "gallery"
             set_page("ai_lounge")
             st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Featured ──
+    # ── Stats ──
     st.markdown(
         """
-        <div class="fv-home-section">
-          <div class="fv-home-section-row">
-            <div>
-              <h3>Featured today</h3>
-              <p>Popular picks ready to order.</p>
-            </div>
+        <div class="fv-stat-strip">
+          <div class="fv-stat-pill"><strong>⭐ 4.9</strong><span>Rating</span></div>
+          <div class="fv-stat-pill"><strong>🍽 1200+</strong><span>Orders Today</span></div>
+          <div class="fv-stat-pill"><strong>🤖 10</strong><span>AI Companions</span></div>
+          <div class="fv-stat-pill"><strong>⏱ 20 min</strong><span>Delivery</span></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # ── Featured dishes ──
+    st.markdown(
+        """
+        <div class="fv-section">
+          <div class="fv-section-head">
+            <h3>Featured Today</h3>
+            <p>Chef picks ready to order.</p>
           </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    featured = [item for item in st.session_state.menu_items if item.get("featured")]
-    if not featured:
-        featured = st.session_state.menu_items[:3]
-
+    featured = _featured_items()
     cols = st.columns(3, gap="large")
     for col, item in zip(cols, featured):
         with col:
             with st.container(border=True):
-                render_food_card(item, compact=True)
+                render_food_card(item, compact=True, show_favorite=False)
 
-    st.markdown('<div class="fv-home-more">', unsafe_allow_html=True)
-    if st.button("View full menu", key="home_view_menu"):
-        set_page("menu")
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    # ── Categories — button is the tile ──
+    # ── AI Lounge preview ──
     st.markdown(
         """
-        <div class="fv-home-section">
-          <div class="fv-home-section-row">
-            <div>
-              <h3>Categories</h3>
-              <p>Jump to what you’re craving.</p>
-            </div>
+        <div class="fv-section">
+          <div class="fv-section-head">
+            <h3>Meet Your AI Companions</h3>
+            <p>Company while your order cooks.</p>
           </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    cat_cols = st.columns(len(DEMO_CATEGORIES), gap="small")
-    for col, category in zip(cat_cols, DEMO_CATEGORIES):
+    prow = st.columns(3, gap="large")
+    for col, persona in zip(prow, HOME_COMPANIONS):
         with col:
-            st.markdown('<div class="fv-home-cat">', unsafe_allow_html=True)
-            label = f"{category.get('emoji', '')}  {category['name']}"
-            if st.button(label, key=f"home_cat_{category['id']}", use_container_width=True):
-                st.session_state.selected_category_id = category["id"]
-                st.session_state.menu_search = ""
-                set_page("menu")
-                st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
-
-    # ── AI companions — compact, one CTA ──
-    faces = "".join(
-        f'<span class="fv-home-face" title="{html.escape(p["display_name"])}">{html.escape(p["emoji"])}</span>'
-        for p in HOME_PERSONAS[:5]
-    )
-    st.markdown(
-        f"""
-        <div class="fv-home-section">
-          <div class="fv-home-ai-banner">
-            <div class="fv-home-ai-copy">
-              <div class="fv-home-ai-label">AI Lounge</div>
-              <h3>Company while you wait</h3>
-              <p>Actress, Chef, CEO, and more — pick a vibe and start chatting.</p>
-              <div class="fv-home-faces">{faces}</div>
-            </div>
-          </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.markdown('<div class="fv-home-ai-cta">', unsafe_allow_html=True)
-    ai_cols = st.columns([1.2, 1.2, 1.2, 1.2, 2])
-    for col, persona in zip(ai_cols, HOME_PERSONAS[:4]):
-        with col:
-            if st.button(
-                f"{persona['emoji']} {persona['display_name']}",
-                key=f"home_persona_{persona['key']}",
-                use_container_width=True,
-            ):
+            st.markdown(
+                f"""
+                <div class="fv-companion">
+                  <div class="fv-companion-avatar">{html.escape(persona["emoji"])}<span class="fv-online-pip"></span></div>
+                  <div class="fv-companion-name">{html.escape(persona["name"])}</div>
+                  <div class="fv-companion-role">{html.escape(persona["role"])}</div>
+                  <div class="fv-companion-desc">{html.escape(persona["desc"])}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            if st.button("Chat", key=f"home_persona_{persona['key']}", use_container_width=True):
                 set_persona(persona["key"])
                 st.session_state.lounge_view = "chat"
                 set_page("ai_lounge")
                 st.rerun()
-    with ai_cols[4]:
-        st.markdown('<div class="fv-home-ai-all">', unsafe_allow_html=True)
-        if st.button("All companions →", use_container_width=True, key="home_all_ai"):
-            st.session_state.lounge_view = "gallery"
-            set_page("ai_lounge")
-            st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
+
     st.markdown("</div>", unsafe_allow_html=True)
-
-
-if __name__ == "__main__":
-    from utils.session import init_session
-
-    init_session()
-    render()

@@ -23,6 +23,13 @@ class ApiClient:
         response.raise_for_status()
         return response.json()
 
+    def is_online(self) -> bool:
+        try:
+            data = self.health()
+            return bool(data.get("status") == "ok")
+        except Exception:  # noqa: BLE001
+            return False
+
     def get_menu(self) -> list[dict[str, Any]]:
         response = requests.get(self._url("/menu"), timeout=self.timeout)
         response.raise_for_status()
@@ -49,7 +56,23 @@ class ApiClient:
         return response.json()
 
     def send_chat_message(self, payload: dict[str, Any]) -> dict[str, Any]:
-        response = requests.post(self._url("/chat"), json=payload, timeout=self.chat_timeout)
+        try:
+            response = requests.post(
+                self._url("/chat"),
+                json=payload,
+                timeout=self.chat_timeout,
+            )
+        except requests.ConnectionError as exc:
+            raise RuntimeError(
+                "Cannot reach the backend at "
+                f"{self.base_url}. Start it with: "
+                "python -m uvicorn app.main:app --reload (from the backend folder)."
+            ) from exc
+        except requests.Timeout as exc:
+            raise RuntimeError(
+                "The AI chat timed out. Check your internet connection and GROQ_API_KEY."
+            ) from exc
+
         if not response.ok:
             detail = ""
             try:

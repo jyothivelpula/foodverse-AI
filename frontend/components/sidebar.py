@@ -1,4 +1,4 @@
-"""Premium sidebar — clear icons, active accent, cart badge."""
+"""Premium sidebar — dark rail, icons, active accent, cart badge."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from utils.session import get_cart, set_page
 
 NAV_MAIN = [
     ("home", "🏠", "Dashboard"),
-    ("menu", "🍽", "Menu"),
+    ("menu", "🍕", "Menu"),
     ("ai_lounge", "✦", "AI Lounge"),
     ("cart", "🛒", "Cart"),
     ("order_tracking", "📦", "Orders"),
@@ -26,7 +26,6 @@ NAV_ACCOUNT = [
 def _nav_item(key: str, icon: str, label: str, current: str, badge: str = "") -> None:
     is_active = current == key
     active_cls = " is-active" if is_active else ""
-    badge_html = f'<span class="fv-nav-badge">{html.escape(badge)}</span>' if badge else ""
 
     st.markdown(f'<div class="fv-nav-row{active_cls}">', unsafe_allow_html=True)
     icon_col, label_col = st.columns([0.85, 4.0], vertical_alignment="center")
@@ -50,13 +49,6 @@ def _nav_item(key: str, icon: str, label: str, current: str, badge: str = "") ->
                 st.session_state.lounge_category = "all"
             set_page(key)
             st.rerun()
-
-    # Visual badge marker for CSS targeting (cart count shown in button text too)
-    if badge_html:
-        st.markdown(
-            f'<div class="fv-nav-badge-slot">{badge_html}</div>',
-            unsafe_allow_html=True,
-        )
 
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -84,8 +76,8 @@ def render_sidebar() -> None:
             <div class="fv-side-brand">
               <div class="fv-side-logo">🍽</div>
               <div class="fv-side-brand-text">
-                <div class="fv-side-title">FoodVerse AI</div>
-                <div class="fv-side-sub">Order • Chat • Enjoy</div>
+                <div class="fv-side-title">FoodVerse</div>
+                <div class="fv-side-sub">AI Kitchen</div>
               </div>
             </div>
             """,
@@ -99,6 +91,9 @@ def render_sidebar() -> None:
         _section("ACCOUNT", NAV_ACCOUNT, current)
 
         st.markdown('<div class="fv-side-spacer"></div>', unsafe_allow_html=True)
+        api_online = bool(st.session_state.get("backend_online", False))
+        status_label = "API Online" if api_online else "API Offline"
+        status_cls = "fv-online-dot" if api_online else "fv-offline-dot"
         st.markdown(
             f"""
             <div class="fv-side-user">
@@ -106,7 +101,7 @@ def render_sidebar() -> None:
               <div class="fv-side-user-meta">
                 <div class="fv-side-user-name">{first}</div>
                 <div class="fv-side-user-status">
-                  <span class="fv-online-dot"></span> Online
+                  <span class="{status_cls}"></span> {status_label}
                 </div>
               </div>
             </div>

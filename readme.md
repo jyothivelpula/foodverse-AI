@@ -135,26 +135,40 @@ Reviews
 8.Project Structure
 FoodVerse-AI/
 │
-├── frontend/
-│   ├── components/
-│   ├── pages/
-│   ├── chat/
-│   ├── cart/
-│   ├── order-tracking/
-│   ├── assets/
-│   └── App.jsx
+├── web/                    ← React + Vite frontend (primary UI)
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── api/
+│   │   ├── data/
+│   │   └── store/
+│   └── README.md
+│
+├── frontend/               ← Legacy Streamlit UI (optional)
 │
 ├── backend/
 │   ├── app/
 │   │   ├── routers/
 │   │   ├── services/
-│   │   ├── ai/
 │   │   ├── database/
 │   │   ├── models/
 │   │   └── main.py
 │
-├── uploads/
-├── prompts/
-├── images/
 ├── README.md
+└── requirements.txt
+
+## Quick start (React)
+
+```bash
+# Backend
+cd backend
+python -m uvicorn app.main:app --reload
+
+# Frontend (new terminal)
+cd web
+npm install
+npm run dev
+```
+
+Open http://localhost:5173 — AI Lounge uses `POST /chat` on FastAPI.
 └── requirements.txt
