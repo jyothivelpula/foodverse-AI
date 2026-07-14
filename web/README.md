@@ -38,7 +38,13 @@ npm run preview
 
 Deploy the `web/dist` folder to Vercel, Netlify, Cloudflare Pages, etc. Point `VITE_API_URL` at your hosted FastAPI API.
 
+### Vercel SPA refresh fix
+
+`web/vercel.json` rewrites all routes to `index.html` so refreshing `/orders`, `/chef`, etc. works. Set the Vercel project **Root Directory** to `web`, then redeploy.
+
 ## Notes
 
-- Backend is unchanged: only `GET /health` and `POST /chat` are required for AI Lounge.
+- Auth: `POST /auth/register`, `POST /auth/login`, `GET /auth/me` (JWT includes `role`: `customer` | `chef`).
+- AI Lounge still uses `GET /health` and `POST /chat`.
+- Demo users (after `python seed_users.py`): `customer@foodverse.com` / `chef@foodverse.com` — password `password123`.
 - The older Streamlit UI remains in `frontend/` if you still need it.

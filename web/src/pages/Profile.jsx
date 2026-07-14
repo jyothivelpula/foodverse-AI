@@ -1,10 +1,18 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useStore } from '../store/useStore'
 
 export default function Profile() {
+  const navigate = useNavigate()
   const customer = useStore((s) => s.customer)
+  const user = useStore((s) => s.user)
   const setCustomer = useStore((s) => s.setCustomer)
-  const [form, setForm] = useState(customer)
+  const logout = useStore((s) => s.logout)
+  const [form, setForm] = useState({
+    ...customer,
+    name: customer.name || user?.name || '',
+    email: customer.email || user?.email || '',
+  })
   const [saved, setSaved] = useState(false)
 
   const save = (e) => {
@@ -14,12 +22,20 @@ export default function Profile() {
     setTimeout(() => setSaved(false), 2000)
   }
 
+  const onLogout = () => {
+    logout()
+    navigate('/login', { replace: true })
+  }
+
   return (
     <form
       onSubmit={save}
       className="mx-auto max-w-xl space-y-4 rounded-3xl border border-border bg-white p-6 shadow-sm"
     >
-      <h1 className="font-serif text-4xl font-semibold">Profile</h1>
+      <div>
+        <h1 className="font-serif text-4xl font-semibold">Profile</h1>
+        <p className="mt-1 text-sm text-muted">Signed in as {user?.role || 'customer'}</p>
+      </div>
       {['name', 'phone', 'email', 'address'].map((field) => (
         <label key={field} className="block text-sm font-semibold capitalize">
           {field}
@@ -30,13 +46,22 @@ export default function Profile() {
           />
         </label>
       ))}
-      <button
-        type="submit"
-        className="rounded-full bg-orange px-6 py-2.5 text-sm font-bold text-white"
-      >
-        Save profile
-      </button>
-      {saved && <span className="ml-3 text-sm text-green-600">Saved!</span>}
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          type="submit"
+          className="rounded-full bg-orange px-6 py-2.5 text-sm font-bold text-white"
+        >
+          Save profile
+        </button>
+        <button
+          type="button"
+          onClick={onLogout}
+          className="rounded-full border border-red-200 bg-red-50 px-6 py-2.5 text-sm font-bold text-red-600"
+        >
+          Sign out
+        </button>
+        {saved && <span className="text-sm text-green-600">Saved!</span>}
+      </div>
     </form>
   )
 }

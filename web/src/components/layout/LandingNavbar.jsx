@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ShoppingBag } from 'lucide-react'
 import { useStore } from '../../store/useStore'
 
@@ -43,38 +43,44 @@ export default function LandingNavbar() {
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
-          {[
-            ['/menu', 'Menu'],
-            ['/ai-lounge', 'AI Lounge'],
-          ].map(([to, label]) => (
-            <NavLink
-              key={to}
-              to={to}
-              className={`text-sm font-semibold transition hover:text-[#FF5A1F] ${
-                scrolled ? 'text-[#1A1A1A]' : 'text-white/90'
-              }`}
-            >
-              {label}
-            </NavLink>
-          ))}
+          <Link
+            to="/login"
+            className={`text-sm font-semibold transition hover:text-[#FF5A1F] ${
+              scrolled ? 'text-[#1A1A1A]' : 'text-white/90'
+            }`}
+          >
+            Sign in
+          </Link>
         </nav>
 
-        <Link
-          to="/cart"
-          className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition hover:scale-105 ${
-            scrolled
-              ? 'bg-[#1A1A1A] text-white'
-              : 'bg-white/15 text-white backdrop-blur-md border border-white/25'
-          }`}
-        >
-          <ShoppingBag size={16} />
-          Cart
-          {cartCount > 0 && (
-            <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#FF5A1F] px-1.5 text-[11px] text-white">
-              {cartCount}
-            </span>
-          )}
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/register"
+            className={`hidden rounded-full px-4 py-2.5 text-sm font-semibold transition sm:inline-flex ${
+              scrolled
+                ? 'border border-border text-[#1A1A1A] hover:border-[#FF5A1F]/40'
+                : 'border border-white/25 bg-white/10 text-white backdrop-blur-md'
+            }`}
+          >
+            Join
+          </Link>
+          <Link
+            to="/login"
+            className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition hover:scale-105 ${
+              scrolled
+                ? 'bg-[#FF5A1F] text-white'
+                : 'bg-white text-[#1A1A1A]'
+            }`}
+          >
+            <ShoppingBag size={16} />
+            Order
+            {cartCount > 0 && (
+              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#1A1A1A] px-1.5 text-[11px] text-white">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+        </div>
       </div>
     </header>
   )

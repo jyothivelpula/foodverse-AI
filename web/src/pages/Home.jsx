@@ -18,8 +18,13 @@ const fadeUp = {
 export default function Home() {
   const menuItems = useStore((s) => s.menuItems)
   const setPersona = useStore((s) => s.setPersona)
+  const token = useStore((s) => s.token)
+  const user = useStore((s) => s.user)
   const featured = menuItems.filter((i) => i.featured).slice(0, 3)
   const companions = LOUNGE_PREVIEW.map((k) => PERSONAS.find((p) => p.key === k)).filter(Boolean)
+  const menuPath = token && user?.role === 'customer' ? '/menu' : '/login'
+  const loungePath = token && user?.role === 'customer' ? '/ai-lounge' : '/login'
+  const dashPath = user?.role === 'chef' ? '/chef' : token ? '/home' : '/login'
 
   const scrollToHow = () => {
     document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })
@@ -63,10 +68,16 @@ export default function Home() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                to="/menu"
+                to={menuPath}
                 className="inline-flex items-center justify-center rounded-full bg-[#FF5A1F] px-7 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(255,90,31,0.35)] transition duration-200 hover:scale-105 hover:bg-[#e84e16]"
               >
                 Explore Menu
+              </Link>
+              <Link
+                to={dashPath}
+                className="inline-flex items-center justify-center rounded-full border border-white/40 bg-white px-7 py-3.5 text-sm font-semibold text-[#1A1A1A] transition duration-200 hover:scale-105"
+              >
+                {token ? 'Go to dashboard' : 'Sign in'}
               </Link>
               <button
                 type="button"
@@ -210,7 +221,7 @@ export default function Home() {
         </div>
         <div className="mt-8 text-center">
           <Link
-            to="/menu"
+            to={menuPath}
             className="inline-flex rounded-full border border-[#FF5A1F]/30 bg-[#FF5A1F]/10 px-6 py-3 text-sm font-semibold text-[#FF5A1F] transition hover:scale-105 hover:bg-[#FF5A1F] hover:text-white"
           >
             View full menu
@@ -241,7 +252,7 @@ export default function Home() {
               <div className="text-sm font-semibold text-[#FF5A1F]">{p.displayName}</div>
               <p className="mt-2 min-h-[2.8em] text-sm text-[#5A5A5A]">{p.tagline}</p>
               <Link
-                to="/ai-lounge"
+                to={loungePath}
                 onClick={() => setPersona(p.key)}
                 className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-[#FF5A1F]/25 bg-[#FF5A1F]/10 py-2.5 text-sm font-semibold text-[#FF5A1F] transition hover:scale-[1.02] hover:bg-[#FF5A1F] hover:text-white"
               >

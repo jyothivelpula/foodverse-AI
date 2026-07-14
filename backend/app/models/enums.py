@@ -34,3 +34,8 @@ class Language(str, enum.Enum):
     ENGLISH = "en"
     TELUGU = "te"
     HINDI = "hi"
+
+
+class UserRole(str, enum.Enum):
+    CUSTOMER = "customer"
+    CHEF = "chef"

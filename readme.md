@@ -21,8 +21,10 @@ Place Food Order
 Order Confirmation Message
 Live Order Status Tracking
 2.AI Waiting Lounge
-Once the customer places an order, the system displays:
-✅ Your order has been confirmed.
+Once the customer places an order, the system displays live kitchen notifications:
+👨‍🍳 Chef accepted your order.
+🔥 Cooking Started
+🎉 Done
 
 Estimated Preparation Time: 20 Minutes.
 
@@ -43,32 +45,20 @@ Customers can switch between different AI companions.
 | 🤝 Best Friend     | Friendly conversations            |
 Each personality has its own prompt so the responses feel unique.
 4.🍔 Order Tracking
-Customers can monitor every stage of their order.
-Order Placed
+Customers get real-time notifications at three milestones.
+Order Placed (Pending)
 
 ↓
 
-Order Confirmed
+Chef Accepted
 
 ↓
 
-Preparing Ingredients
+Cooking Started
 
 ↓
 
-Cooking
-
-↓
-
-Packing
-
-↓
-
-Ready for Pickup / Out for Delivery
-
-↓
-
-Delivered
+Done
 5.Admin Features
 Secure Admin Login
 Dashboard

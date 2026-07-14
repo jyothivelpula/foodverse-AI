@@ -5,16 +5,22 @@ import { useStore } from '../store/useStore'
 export default function Checkout() {
   const navigate = useNavigate()
   const customer = useStore((s) => s.customer)
+  const user = useStore((s) => s.user)
   const setCustomer = useStore((s) => s.setCustomer)
   const cart = useStore((s) => s.cart)
   const cartSubtotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0)
   const placeOrder = useStore((s) => s.placeOrder)
-  const [form, setForm] = useState(customer)
+  const [form, setForm] = useState({
+    ...customer,
+    name: customer.name || user?.name || '',
+    email: customer.email || user?.email || '',
+  })
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault()
     setCustomer(form)
-    const id = placeOrder()
+    useStore.setState({ customer: { ...useStore.getState().customer, ...form } })
+    const id = await placeOrder()
     navigate(`/orders?placed=${id}`)
   }
 
