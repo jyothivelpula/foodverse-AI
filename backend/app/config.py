@@ -48,6 +48,14 @@ class Settings(BaseSettings):
             return normalize_database_url(value.strip())
         return value
 
+    @field_validator("groq_api_key", mode="before")
+    @classmethod
+    def _strip_groq_key(cls, value: object) -> object:
+        if isinstance(value, str):
+            # Remove accidental quotes/spaces from Render env paste
+            return value.strip().strip('"').strip("'")
+        return value
+
 
 @lru_cache
 def get_settings() -> Settings:
