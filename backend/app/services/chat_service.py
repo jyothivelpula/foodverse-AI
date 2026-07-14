@@ -123,21 +123,26 @@ BASE_RULES = (
 )
 
 
-def resolve_persona(db: Session, persona_key: str) -> tuple[str, str]:
-    persona = (
-        db.query(Persona)
-        .filter(Persona.key == persona_key, Persona.is_active.is_(True))
-        .first()
-    )
-    if persona:
-        return persona.display_name, persona.system_prompt
+def resolve_persona(db: Session | None, persona_key: str) -> tuple[str, str]:
+    """Load persona from DB when available; otherwise use built-in fallbacks."""
+    if db is not None:
+        try:
+            persona = (
+                db.query(Persona)
+                .filter(Persona.key == persona_key, Persona.is_active.is_(True))
+                .first()
+            )
+            if persona:
+                return persona.display_name, persona.system_prompt
+        except Exception:  # noqa: BLE001 — DB optional on hosted deploys
+            pass
 
     fallback = FALLBACK_PROMPTS.get(persona_key) or FALLBACK_PROMPTS["girlfriend"]
     return fallback["display_name"], fallback["system_prompt"]
 
 
 def generate_reply(
-    db: Session,
+    db: Session | None,
     *,
     persona_key: str,
     message: str,
@@ -146,7 +151,8 @@ def generate_reply(
     settings = get_settings()
     if not settings.groq_api_key:
         raise RuntimeError(
-            "GROQ_API_KEY is missing. Add it to backend/.env to enable AI chat."
+            "GROQ_API_KEY is missing. Set it in your host environment "
+            "(Render Environment Variables) to enable AI chat."
         )
 
     display_name, system_prompt = resolve_persona(db, persona_key)
