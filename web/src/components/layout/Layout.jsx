@@ -53,7 +53,7 @@ export default function Layout() {
           />
           <div className="absolute left-0 top-0 flex h-full w-[80%] max-w-xs flex-col bg-cream p-4 shadow-2xl">
             <div className="mb-4 flex items-center justify-between">
-              <span className="font-serif text-xl font-bold text-[#5b7553]">FoodVerse</span>
+              <span className="font-serif text-xl font-bold text-[#00a600]">FoodVerse</span>
               <button type="button" onClick={() => setOpen(false)} className="rounded-xl p-2">
                 <X size={18} />
               </button>

@@ -36,7 +36,7 @@ export default function Sidebar() {
           🍽
         </div>
         <div>
-          <div className="font-serif text-lg font-bold text-[#5b7553]">FoodVerse</div>
+          <div className="font-serif text-lg font-bold text-[#00a600]">FoodVerse</div>
           <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">
             AI Kitchen
           </div>

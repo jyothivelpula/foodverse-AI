@@ -29,7 +29,7 @@ export default function LandingNavbar() {
             🍽
           </span>
           <span className="leading-tight">
-            <span className="block font-serif text-lg font-semibold text-[#5b7553]">
+            <span className="block font-serif text-lg font-semibold text-[#00a600]">
               FoodVerse
             </span>
             <span
