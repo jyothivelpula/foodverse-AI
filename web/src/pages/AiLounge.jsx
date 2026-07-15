@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Clock3, Radio, Sparkles, ChefHat } from 'lucide-react'
+import { Clock3, Radio, Sparkles, ChefHat, Trash2 } from 'lucide-react'
 import { PERSONAS } from '../data/personas'
 import { useStore } from '../store/useStore'
 import { api } from '../api/client'
@@ -11,12 +11,18 @@ import {
   statusLabel,
 } from '../utils/orderStatus'
 import { formatCountdown, getRemainingSec } from '../utils/orderTimer'
+import ConfirmDialog from '../components/ui/ConfirmDialog'
+
+const WELCOME_COPY =
+  '👋 Welcome to FoodVerse AI Lounge! Ask me anything while your order is being prepared.'
 
 export default function AiLounge() {
   const selectedPersona = useStore((s) => s.selectedPersona)
   const setPersona = useStore((s) => s.setPersona)
   const getChat = useStore((s) => s.getChat)
   const appendChat = useStore((s) => s.appendChat)
+  const clearChat = useStore((s) => s.clearChat)
+  const pushToast = useStore((s) => s.pushToast)
   const backendOnline = useStore((s) => s.backendOnline)
   const setBackendOnline = useStore((s) => s.setBackendOnline)
   const activeOrderId = useStore((s) => s.activeOrderId)
@@ -31,6 +37,7 @@ export default function AiLounge() {
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [confirmClear, setConfirmClear] = useState(false)
   const [now, setNow] = useState(() => Date.now())
   const bottomRef = useRef(null)
   const chatPaneRef = useRef(null)
@@ -65,6 +72,17 @@ export default function AiLounge() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, busy])
+
+  const handleClearChat = () => {
+    clearChat(persona.key)
+    setError('')
+    setInput('')
+    setConfirmClear(false)
+    pushToast({
+      text: 'Conversation cleared successfully.',
+      tone: 'success',
+    })
+  }
 
   const send = async (e) => {
     e.preventDefault()
@@ -222,9 +240,7 @@ export default function AiLounge() {
                   <div className="flex items-start gap-3 rounded-2xl border border-orange/15 bg-gradient-to-r from-orange/[0.07] to-white px-4 py-3 shadow-sm">
                     <span className="mt-0.5 text-base leading-none">🔔</span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-ink">
-                        {n.text}
-                      </p>
+                      <p className="text-sm font-semibold text-ink">{n.text}</p>
                       <p className="mt-0.5 text-[11px] text-muted">
                         {new Date(n.at).toLocaleTimeString([], {
                           hour: '2-digit',
@@ -245,7 +261,7 @@ export default function AiLounge() {
       <section className="flex min-h-[420px] flex-col overflow-hidden rounded-[28px] border border-border bg-white shadow-[0_16px_48px_rgba(26,26,26,0.06)] md:min-h-[480px]">
         <div className="border-b border-border px-4 py-3">
           <div className="mb-3 flex items-center gap-3">
-            <div className="grid h-11 w-11 place-items-center rounded-2xl bg-orange/10 text-xl">
+            <div className="grid h-11 w-11 place-items-center rounded-2xl bg-[#5CA47B]/12 text-xl">
               {persona.emoji}
             </div>
             <div className="min-w-0 flex-1">
@@ -257,6 +273,18 @@ export default function AiLounge() {
                 {backendOnline ? '🟢 Companion online' : '🔴 Companion offline'} · chat is saved
               </div>
             </div>
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setConfirmClear(true)}
+              disabled={messages.length === 0 && !error}
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[#5CA47B]/30 bg-[#5CA47B]/10 px-3.5 py-2 text-xs font-bold text-[#5CA47B] transition hover:bg-[#5CA47B] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-[#5CA47B]/10 disabled:hover:text-[#5CA47B]"
+              aria-label="Clear chat"
+            >
+              <Trash2 size={14} strokeWidth={2.4} />
+              Clear Chat
+            </motion.button>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {PERSONAS.map((p) => {
@@ -271,8 +299,8 @@ export default function AiLounge() {
                   }}
                   className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
                     active
-                      ? 'bg-orange text-white shadow-md shadow-orange/25'
-                      : 'border border-border bg-cream-deep text-ink hover:border-orange/30'
+                      ? 'bg-[#5CA47B] text-white shadow-md shadow-[#5CA47B]/25'
+                      : 'border border-border bg-cream-deep text-ink hover:border-[#5CA47B]/40'
                   }`}
                 >
                   {p.emoji} {p.characterName}
@@ -286,26 +314,40 @@ export default function AiLounge() {
           ref={chatPaneRef}
           className="flex-1 space-y-3 overflow-y-auto bg-[linear-gradient(180deg,#fafafa_0%,#ffffff_40%)] p-4"
         >
-          {messages.length === 0 && (
-            <div className="rounded-2xl border border-border bg-white p-4 text-sm text-muted shadow-sm">
-              Hello! 😊 I&apos;m {persona.characterName}. Your conversation stays here while kitchen
-              updates slide in above — ask me anything while you wait.
-            </div>
-          )}
-          {messages.map((m, i) => (
-            <motion.div
-              key={`${persona.key}-${i}-${m.role}-${m.content.slice(0, 12)}`}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                m.role === 'user'
-                  ? 'ml-auto bg-orange text-white'
-                  : 'bg-white text-ink shadow-sm ring-1 ring-border'
-              }`}
-            >
-              {m.content}
-            </motion.div>
-          ))}
+          <AnimatePresence mode="wait">
+            {messages.length === 0 ? (
+              <motion.div
+                key="welcome"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.25 }}
+                className="rounded-2xl border border-[#5CA47B]/20 bg-gradient-to-br from-[#5CA47B]/08 to-white p-5 text-sm leading-relaxed text-ink shadow-sm"
+              >
+                <p className="font-medium">{WELCOME_COPY}</p>
+                <p className="mt-2 text-xs text-muted">
+                  You&apos;re chatting with {persona.characterName} · {persona.displayName}
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div key="thread" className="space-y-3">
+                {messages.map((m, i) => (
+                  <motion.div
+                    key={`${persona.key}-${i}-${m.role}-${m.content.slice(0, 12)}`}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                      m.role === 'user'
+                        ? 'ml-auto bg-[#5CA47B] text-white'
+                        : 'bg-white text-ink shadow-sm ring-1 ring-border'
+                    }`}
+                  >
+                    {m.content}
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
           {busy && (
             <div className="rounded-2xl bg-white px-4 py-3 text-sm text-muted shadow-sm ring-1 ring-border">
               {persona.characterName} is typing…
@@ -325,17 +367,27 @@ export default function AiLounge() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={`Message ${persona.characterName}…`}
-            className="h-12 flex-1 rounded-full border border-border px-4 text-sm outline-none focus:border-orange/40 focus:ring-4 focus:ring-orange/10"
+            className="h-12 flex-1 rounded-full border border-border px-4 text-sm outline-none focus:border-[#5CA47B]/40 focus:ring-4 focus:ring-[#5CA47B]/10"
           />
           <button
             type="submit"
             disabled={busy}
-            className="rounded-full bg-orange px-5 text-sm font-bold text-white disabled:opacity-60"
+            className="rounded-full bg-[#5CA47B] px-5 text-sm font-bold text-white shadow-md shadow-[#5CA47B]/20 transition hover:brightness-105 disabled:opacity-60"
           >
             Send
           </button>
         </form>
       </section>
+
+      <ConfirmDialog
+        open={confirmClear}
+        title="Clear conversation?"
+        description="Are you sure you want to clear this conversation?"
+        cancelLabel="Cancel"
+        confirmLabel="Clear Chat"
+        onCancel={() => setConfirmClear(false)}
+        onConfirm={handleClearChat}
+      />
     </div>
   )
 }

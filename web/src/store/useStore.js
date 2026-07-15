@@ -148,6 +148,17 @@ export const useStore = create(
       dismissToast: (id) =>
         set({ toasts: get().toasts.filter((t) => t.id !== id) }),
 
+      pushToast: ({ text, tone = 'info' }) => {
+        const toast = {
+          id: `toast-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          text,
+          tone,
+          at: Date.now(),
+        }
+        set({ toasts: [toast, ...get().toasts].slice(0, 5) })
+        return toast
+      },
+
       markNotificationRead: (id) =>
         set({
           notifications: get().notifications.map((n) =>
