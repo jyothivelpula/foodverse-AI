@@ -1,6 +1,7 @@
 """JWT auth: register, login, me."""
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.exc import OperationalError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.core.deps import get_current_user
@@ -12,6 +13,18 @@ from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, UserO
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+_DB_DOWN = (
+    "Database unavailable. On Render, set DATABASE_URL to your Render Postgres "
+    "External/Internal URL, run create_tables + seed_users, then redeploy."
+)
+
+
+def _db_http_error(exc: Exception) -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        detail=_DB_DOWN,
+    )
+
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 def register(payload: RegisterRequest, db: Session = Depends(get_db)) -> TokenResponse:
@@ -19,20 +32,26 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)) -> TokenRe
         raise HTTPException(status_code=400, detail="Role must be customer or chef")
 
     email = payload.email.lower().strip()
-    existing = db.query(User).filter(User.email == email).first()
-    if existing:
-        raise HTTPException(status_code=400, detail="Email already registered")
+    try:
+        existing = db.query(User).filter(User.email == email).first()
+        if existing:
+            raise HTTPException(status_code=400, detail="Email already registered")
 
-    user = User(
-        name=payload.name.strip(),
-        email=email,
-        hashed_password=hash_password(payload.password),
-        role=payload.role.value,
-        phone=(payload.phone or None),
-    )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
+        user = User(
+            name=payload.name.strip(),
+            email=email,
+            hashed_password=hash_password(payload.password),
+            role=payload.role.value,
+            phone=(payload.phone or None),
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    except HTTPException:
+        raise
+    except (OperationalError, SQLAlchemyError) as exc:
+        db.rollback()
+        raise _db_http_error(exc) from exc
 
     token = create_access_token(
         subject=str(user.id),
@@ -46,7 +65,11 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)) -> TokenRe
 @router.post("/login", response_model=TokenResponse)
 def login(payload: LoginRequest, db: Session = Depends(get_db)) -> TokenResponse:
     email = payload.email.lower().strip()
-    user = db.query(User).filter(User.email == email).first()
+    try:
+        user = db.query(User).filter(User.email == email).first()
+    except (OperationalError, SQLAlchemyError) as exc:
+        raise _db_http_error(exc) from exc
+
     if not user or not verify_password(payload.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

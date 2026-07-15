@@ -1,16 +1,59 @@
-const RAW_API_BASE =
+/**
+ * API base URL resolution.
+ *
+ * On Vercel we use same-origin `/api` (proxied to Render via vercel.json)
+ * so the browser never does a cross-origin fetch to onrender.com.
+ * That avoids "Cannot reach API" / Failed to fetch CORS-style failures.
+ */
+function resolveApiBase() {
+  const env = String(import.meta.env.VITE_API_URL || '')
+    .trim()
+    .replace(/\/$/, '')
+
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname
+    const onVercel = host.endsWith('.vercel.app')
+    // Force same-origin proxy on Vercel even if env still points at Render
+    if (onVercel && (!env || /onrender\.com/i.test(env))) {
+      return '/api'
+    }
+  }
+
+  if (env) return env
+
+  // Local Vite — prefer direct backend (vite also proxies /api → :8000)
+  if (import.meta.env.DEV) {
+    return 'http://localhost:8000'
+  }
+
+  return '/api'
+}
+
+const API_BASE = resolveApiBase()
+
+/** Direct Render origin for WebSockets (Vercel cannot proxy WS upgrades). */
+const WS_ORIGIN = (
+  import.meta.env.VITE_WS_URL ||
   import.meta.env.VITE_API_URL ||
-  (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-    ? 'http://localhost:8000'
-    : 'http://127.0.0.1:8000')
+  'https://foodverse-ai-1.onrender.com'
+)
+  .toString()
+  .trim()
+  .replace(/\/$/, '')
+  .replace(/^wss:/i, 'https:')
+  .replace(/^ws:/i, 'http:')
 
-const API_BASE = String(RAW_API_BASE).replace(/\/$/, '')
-
-const IS_REMOTE = /^https?:\/\//i.test(API_BASE) && !/localhost|127\.0\.0\.1/i.test(API_BASE)
+const USES_PROXY = API_BASE === '/api' || API_BASE.startsWith('/api/')
+const IS_REMOTE =
+  USES_PROXY ||
+  (/^https?:\/\//i.test(API_BASE) && !/localhost|127\.0\.0\.1/i.test(API_BASE))
 
 function unreachableMessage() {
+  if (USES_PROXY) {
+    return `Cannot reach API (via /api proxy). Wake the Render service at https://foodverse-ai-1.onrender.com/health — free tier sleeps when idle — then retry.`
+  }
   if (IS_REMOTE) {
-    return `Cannot reach API at ${API_BASE}. The Render free tier sleeps when idle — wait ~30–60s and retry, or check the service is Live in the Render dashboard.`
+    return `Cannot reach API at ${API_BASE}. Open that /health URL in a new tab to wake Render, wait ~30–60s, then retry.`
   }
   return `Cannot reach API at ${API_BASE}. Start the backend with: python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`
 }
@@ -49,7 +92,6 @@ async function request(path, options = {}) {
     }
 
     if (!res.ok) {
-      // Render cold-start / gateway blips
       if ([502, 503, 504].includes(res.status) && attempt < retries) {
         await sleep(1500 * 2 ** attempt)
         continue
@@ -70,9 +112,7 @@ async function request(path, options = {}) {
     return res.json()
   }
 
-  throw lastNetworkError
-    ? new Error(unreachableMessage())
-    : new Error(unreachableMessage())
+  throw new Error(unreachableMessage())
 }
 
 export const api = {
@@ -142,4 +182,4 @@ export const api = {
   },
 }
 
-export { API_BASE }
+export { API_BASE, WS_ORIGIN }

@@ -1,8 +1,17 @@
-import { API_BASE } from '../api/client'
+import { API_BASE, WS_ORIGIN } from '../api/client'
 
 function toWsUrl(path) {
-  let base = API_BASE.replace(/\/$/, '')
-  // Align host with the page to avoid CORS quirks (localhost vs 127.0.0.1)
+  // Prefer direct Render for WebSockets (Vercel /api rewrite is HTTP-only)
+  let base = WS_ORIGIN
+  if (!base || base.startsWith('/')) {
+    base = API_BASE
+  }
+  if (base.startsWith('/')) {
+    // Relative API — derive from page host (WS to Vercel will fail; polling covers it)
+    const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+    return `${proto}//${window.location.host}${base.replace(/\/$/, '')}${path}`
+  }
+
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
     base = base.replace('127.0.0.1', 'localhost')
   }

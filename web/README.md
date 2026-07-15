@@ -36,11 +36,24 @@ npm run build
 npm run preview
 ```
 
-Deploy the `web/dist` folder to Vercel, Netlify, Cloudflare Pages, etc. Point `VITE_API_URL` at your hosted FastAPI API.
+Deploy the `web/dist` folder to Vercel, Netlify, Cloudflare Pages, etc.
 
-### Vercel SPA refresh fix
+### Vercel setup (important)
 
-`web/vercel.json` rewrites all routes to `index.html` so refreshing `/orders`, `/chef`, etc. works. Set the Vercel project **Root Directory** to `web`, then redeploy.
+1. Project **Root Directory** = `web`
+2. Environment variable (Build):
+   - Prefer: `VITE_API_URL=/api`  
+   - Or **remove** `VITE_API_URL` if it was set to `https://….onrender.com`  
+   - Do **not** leave a full Render URL — the browser will call it cross-origin and often fail with “Cannot reach API”
+3. `web/vercel.json` proxies `/api/*` → `https://foodverse-ai-1.onrender.com/*` and rewrites SPA routes to `index.html`
+4. Redeploy after changing env vars (Vite bakes `VITE_*` at **build** time)
+
+### Render setup
+
+- `DATABASE_URL` must be your Render **Postgres** URL (not localhost)
+- After DB is connected: run `python create_tables.py` and `python seed_users.py` (Render shell or one-off job)
+- `GROQ_API_KEY` required for chat
+- Free tier sleeps when idle — open `/health` once to wake it
 
 ## Notes
 
