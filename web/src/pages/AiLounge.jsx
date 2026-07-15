@@ -240,7 +240,10 @@ export default function AiLounge() {
                   <div className="flex items-start gap-3 rounded-2xl border border-orange/15 bg-gradient-to-r from-orange/[0.07] to-white px-4 py-3 shadow-sm">
                     <span className="mt-0.5 text-base leading-none">🔔</span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-ink">{n.text}</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-orange">
+                        {n.title || 'Chef Update'}
+                      </p>
+                      <p className="mt-0.5 text-sm font-semibold text-ink">{n.text}</p>
                       <p className="mt-0.5 text-[11px] text-muted">
                         {new Date(n.at).toLocaleTimeString([], {
                           hour: '2-digit',

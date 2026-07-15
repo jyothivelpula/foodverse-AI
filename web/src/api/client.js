@@ -31,17 +31,33 @@ function resolveApiBase() {
 
 const API_BASE = resolveApiBase()
 
-/** Direct Render origin for WebSockets (Vercel cannot proxy WS upgrades). */
-const WS_ORIGIN = (
-  import.meta.env.VITE_WS_URL ||
-  import.meta.env.VITE_API_URL ||
-  'https://foodverse-ai-1.onrender.com'
-)
-  .toString()
-  .trim()
-  .replace(/\/$/, '')
-  .replace(/^wss:/i, 'https:')
-  .replace(/^ws:/i, 'http:')
+const DEFAULT_RENDER_ORIGIN = 'https://foodverse-ai-1.onrender.com'
+
+/** Direct backend origin for WebSockets (Vercel /api rewrite is HTTP-only). */
+function resolveWsOrigin() {
+  const explicit = String(import.meta.env.VITE_WS_URL || '')
+    .trim()
+    .replace(/\/$/, '')
+  if (explicit) {
+    return explicit.replace(/^wss:/i, 'https:').replace(/^ws:/i, 'http:')
+  }
+  const apiEnv = String(import.meta.env.VITE_API_URL || '')
+    .trim()
+    .replace(/\/$/, '')
+  if (apiEnv && /^https?:\/\//i.test(apiEnv)) {
+    return apiEnv
+  }
+  if (
+    import.meta.env.DEV ||
+    API_BASE.includes('localhost') ||
+    API_BASE.includes('127.0.0.1')
+  ) {
+    return 'http://localhost:8000'
+  }
+  return DEFAULT_RENDER_ORIGIN
+}
+
+const WS_ORIGIN = resolveWsOrigin()
 
 const USES_PROXY = API_BASE === '/api' || API_BASE.startsWith('/api/')
 const IS_REMOTE =

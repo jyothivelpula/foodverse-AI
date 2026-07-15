@@ -57,7 +57,7 @@ ADVANCE_FLOW: list[LiveOrderStatus] = [
 STATUS_MESSAGES: dict[str, str] = {
     LiveOrderStatus.PENDING.value: "Order placed — waiting for the kitchen.",
     LiveOrderStatus.ACCEPTED.value: "Chef accepted your order.",
-    LiveOrderStatus.COOKING.value: "Cooking Started",
+    LiveOrderStatus.COOKING.value: "Your food is now Cooking",
     LiveOrderStatus.DELIVERED.value: "Done",
     LiveOrderStatus.REJECTED.value: "Your order has been rejected.",
 }

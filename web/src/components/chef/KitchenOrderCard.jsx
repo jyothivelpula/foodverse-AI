@@ -190,8 +190,17 @@ export default function KitchenOrderCard({
             onClick={() => onAdvance?.(order.id)}
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-orange px-4 py-3 text-sm font-bold text-white shadow-lg shadow-orange/25 transition hover:scale-[1.01] hover:bg-orange-hover"
           >
-            Advance to {nxtLabel}
-            <ChevronRight size={16} />
+            {nxt === 'cooking' ? (
+              <>
+                <Flame size={16} />
+                Cooking
+              </>
+            ) : (
+              <>
+                Advance to {nxtLabel}
+                <ChevronRight size={16} />
+              </>
+            )}
           </button>
         )}
       </div>

@@ -95,15 +95,27 @@ export const CUSTOMER_NOTIFY_STATUSES = ['accepted', 'cooking', 'delivered']
 
 export const NOTIFICATION_COPY = {
   accepted: '👨‍🍳 Chef accepted your order.',
-  cooking: '🔥 Cooking Started',
+  cooking: '🔥 Your food is now Cooking',
   delivered: '🎉 Done',
   rejected: '❌ Your order has been rejected.',
+}
+
+export const NOTIFICATION_TITLE = {
+  accepted: 'Chef Update',
+  cooking: 'Chef Update',
+  delivered: 'Chef Update',
+  rejected: 'Order Update',
 }
 
 export function notificationForStatus(status) {
   const s = canonicalizeStatus(status)
   if (!CUSTOMER_NOTIFY_STATUSES.includes(s) && s !== 'rejected') return null
   return NOTIFICATION_COPY[s] || null
+}
+
+export function notificationTitleForStatus(status) {
+  const s = canonicalizeStatus(status)
+  return NOTIFICATION_TITLE[s] || 'Chef Update'
 }
 
 export function shouldNotifyCustomer(status) {

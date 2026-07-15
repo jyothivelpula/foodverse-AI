@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { CheckCircle2, X } from 'lucide-react'
+import { Bell, CheckCircle2, X } from 'lucide-react'
 import { useStore } from '../../store/useStore'
 
 export default function ToastHost() {
@@ -14,7 +14,7 @@ export default function ToastHost() {
   useEffect(() => {
     if (!shown.length) return undefined
     const timers = shown.map((t) =>
-      window.setTimeout(() => dismissToast(t.id), 4500),
+      window.setTimeout(() => dismissToast(t.id), 5200),
     )
     return () => timers.forEach((id) => clearTimeout(id))
   }, [shown, dismissToast])
@@ -26,6 +26,7 @@ export default function ToastHost() {
       <AnimatePresence>
         {shown.map((t) => {
           const success = t.tone === 'success'
+          const chef = t.tone === 'chef' || t.status === 'cooking' || t.title
           return (
             <motion.div
               key={t.id}
@@ -36,16 +37,33 @@ export default function ToastHost() {
               className={`pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-2xl p-4 shadow-lg ${
                 success
                   ? 'border border-[#5CA47B]/30 bg-white'
-                  : 'glass-strong'
+                  : chef
+                    ? 'border border-orange/25 bg-white'
+                    : 'glass-strong'
               }`}
             >
-              {success && (
+              {success ? (
                 <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#5CA47B]/15 text-[#5CA47B]">
                   <CheckCircle2 size={16} strokeWidth={2.4} />
                 </span>
-              )}
+              ) : chef ? (
+                <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-orange/15 text-orange">
+                  <Bell size={15} strokeWidth={2.4} />
+                </span>
+              ) : null}
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold leading-snug text-ink">{t.text}</p>
+                {t.title && (
+                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-orange">
+                    🔔 {t.title}
+                  </p>
+                )}
+                <p
+                  className={`text-sm font-semibold leading-snug text-ink ${
+                    t.title ? 'mt-1' : ''
+                  }`}
+                >
+                  {t.text}
+                </p>
                 <p className="mt-1 text-[11px] text-muted">
                   {new Date(t.at).toLocaleTimeString([], {
                     hour: '2-digit',

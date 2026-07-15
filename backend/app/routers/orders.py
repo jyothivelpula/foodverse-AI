@@ -29,7 +29,7 @@ async def order_flow_meta():
         "labels": STATUS_LABELS,
         "notifications": {
             LiveOrderStatus.ACCEPTED.value: "Chef accepted your order.",
-            LiveOrderStatus.COOKING.value: "Cooking Started",
+            LiveOrderStatus.COOKING.value: "Your food is now Cooking",
             LiveOrderStatus.DELIVERED.value: "Done",
         },
         "advance_hint": {

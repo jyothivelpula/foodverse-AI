@@ -145,7 +145,7 @@ export default function Orders() {
                 : status === 'accepted'
                   ? '👨‍🍳 Chef accepted your order.'
                   : status === 'cooking'
-                    ? '🔥 Cooking Started'
+                    ? '🔥 Your food is now Cooking'
                     : delivered
                       ? `🎉 Done — Order #${orderId} is complete. Enjoy!`
                       : liveOrder?.message || `Order #${orderId} — ${statusLabel(status)}`}
@@ -247,7 +247,7 @@ export default function Orders() {
             )}
             {status === 'cooking' && (
               <p className="mt-6 rounded-2xl bg-orange-50 px-4 py-3 text-sm font-semibold text-orange-700">
-                🔥 Cooking Started
+                🔔 Chef Update — 🔥 Your food is now Cooking
               </p>
             )}
             {delivered && (

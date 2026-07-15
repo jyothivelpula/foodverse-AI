@@ -14,6 +14,7 @@ import {
   progressPercent,
   statusLabel,
   notificationForStatus,
+  notificationTitleForStatus,
   shouldNotifyCustomer,
 } from '../utils/orderStatus'
 
@@ -113,7 +114,7 @@ export const useStore = create(
       toggleNotificationCenter: () =>
         set({ notificationCenterOpen: !get().notificationCenterOpen }),
 
-      pushCustomerNotification: ({ orderId, status, text, at }) => {
+      pushCustomerNotification: ({ orderId, status, text, title, at }) => {
         if (!shouldNotifyCustomer(status)) return null
 
         const message = text || notificationForStatus(status)
@@ -128,14 +129,17 @@ export const useStore = create(
           id: `${orderId}-${status}-${at || Date.now()}`,
           orderId,
           status,
+          title: title || notificationTitleForStatus(status),
           text: message,
           at: at || Date.now(),
           read: false,
         }
         const toast = {
           id: `toast-${note.id}`,
+          title: note.title,
           text: note.text,
           status: note.status,
+          tone: 'chef',
           at: note.at,
         }
         set({
@@ -208,6 +212,7 @@ export const useStore = create(
           get().pushCustomerNotification({
             orderId: order.id,
             status: order.status,
+            title: notificationTitleForStatus(order.status),
             text: notificationForStatus(order.status),
             at: order.updatedAt || Date.now(),
           })

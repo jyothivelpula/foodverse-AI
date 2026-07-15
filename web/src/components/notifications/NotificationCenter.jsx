@@ -90,7 +90,16 @@ export default function NotificationCenter() {
                           <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-orange" />
                         )}
                         <div className={`min-w-0 flex-1 ${n.read ? 'pl-4' : ''}`}>
-                          <p className="text-sm font-semibold leading-snug text-ink">
+                          {n.title && (
+                            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-orange">
+                              🔔 {n.title}
+                            </p>
+                          )}
+                          <p
+                            className={`text-sm font-semibold leading-snug text-ink ${
+                              n.title ? 'mt-0.5' : ''
+                            }`}
+                          >
                             {n.text}
                           </p>
                           <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-muted">
