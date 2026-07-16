@@ -13,23 +13,27 @@ _ON_RENDER = bool(os.getenv("RENDER") or os.getenv("RENDER_SERVICE_ID"))
 
 
 def normalize_database_url(url: str) -> str:
-    """Render/Heroku often provide postgres:// — SQLAlchemy needs +psycopg2."""
+    """Render/Heroku/Supabase often provide postgres:// — SQLAlchemy needs +psycopg2."""
     url = url.strip().strip('"').strip("'")
     if url.startswith("postgres://"):
         url = "postgresql+psycopg2://" + url[len("postgres://") :]
     elif url.startswith("postgresql://") and "+psycopg2" not in url:
         url = "postgresql+psycopg2://" + url[len("postgresql://") :]
 
-    # External Render Postgres requires TLS
+    # Managed Postgres (Render / Supabase) requires TLS from outside
     try:
-        # Strip driver for parse: postgresql+psycopg2:// → postgresql://
         parseable = url.replace("postgresql+psycopg2://", "postgresql://", 1)
         parsed = urlparse(parseable)
         host = (parsed.hostname or "").lower()
     except Exception:
         host = ""
 
-    if ("render.com" in host or _ON_RENDER) and "sslmode=" not in url:
+    needs_ssl = (
+        "render.com" in host
+        or "supabase.co" in host
+        or _ON_RENDER
+    )
+    if needs_ssl and "sslmode=" not in url:
         sep = "&" if "?" in url else "?"
         url = f"{url}{sep}sslmode=require"
     return url
@@ -56,10 +60,15 @@ class Settings(BaseSettings):
         env_ignore_empty=True,
     )
 
-    # Accept DATABASE_URL (Render) or database_url
+    # Accept DATABASE_URL, SUPABASE_URL, or SUPABASE_DB_URL
     database_url: str = Field(
         default="postgresql+psycopg2://postgres:postgres@localhost:5432/foodverse",
-        validation_alias=AliasChoices("DATABASE_URL", "database_url"),
+        validation_alias=AliasChoices(
+            "DATABASE_URL",
+            "SUPABASE_URL",
+            "SUPABASE_DB_URL",
+            "database_url",
+        ),
     )
 
     secret_key: str = Field(
