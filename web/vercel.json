@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://foodverse-ai-1.onrender.com/:path*"
+      "destination": "https://foodverse-ai-geef.onrender.com/:path*"
     },
     {
       "source": "/(.*)",
