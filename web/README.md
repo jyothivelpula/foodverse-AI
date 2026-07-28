@@ -40,18 +40,18 @@ Deploy the `web/dist` folder to Vercel, Netlify, Cloudflare Pages, etc.
 
 ### Vercel setup (important)
 
-1. Project **Root Directory** = `web`
-2. Environment variable (Build):
-   - Prefer: `VITE_API_URL=/api`  
-   - Or **remove** `VITE_API_URL` if it was set to `https://….onrender.com`  
-   - Do **not** leave a full Render URL — the browser will call it cross-origin and often fail with “Cannot reach API”
-3. `web/vercel.json` proxies `/api/*` → `https://foodverse-ai-1.onrender.com/*` and rewrites SPA routes to `index.html`
+1. Project **Root Directory**: leave empty (repo root) *or* set to `web`
+2. Environment (Build) — set either:
+   - `VITE_API_URL=https://foodverse-ai-geef.onrender.com`  ← recommended
+   - or leave unset (app defaults to that Render URL on `*.vercel.app`)
+3. Do **not** set `VITE_API_URL` to `/api` unless root `vercel.json` rewrites are confirmed working
 4. Redeploy after changing env vars (Vite bakes `VITE_*` at **build** time)
+
+Working backend: `https://foodverse-ai-geef.onrender.com/health` must show `"database":"ok"`.
 
 ### Render setup
 
-- `DATABASE_URL` must be your Render **Postgres** URL (not localhost)
-- After DB is connected: run `python create_tables.py` and `python seed_users.py` (Render shell or one-off job)
+- `DATABASE_URL` = Supabase **Session pooler** URI (`postgres.PROJECT_REF@…pooler.supabase.com`)
 - `GROQ_API_KEY` required for chat
 - Free tier sleeps when idle — open `/health` once to wake it
 

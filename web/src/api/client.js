@@ -1,39 +1,35 @@
 /**
  * API base URL resolution.
  *
- * On Vercel we use same-origin `/api` (proxied to Render via vercel.json)
- * so the browser never does a cross-origin fetch to onrender.com.
- * That avoids "Cannot reach API" / Failed to fetch CORS-style failures.
+ * On Vercel, call the working Render service directly. The monorepo often
+ * deploys without applying web/vercel.json, so /api/* returns 404.
  */
+const WORKING_RENDER_API = 'https://foodverse-ai-geef.onrender.com'
+
 function resolveApiBase() {
   const env = String(import.meta.env.VITE_API_URL || '')
     .trim()
     .replace(/\/$/, '')
 
-  if (typeof window !== 'undefined') {
-    const host = window.location.hostname
-    const onVercel = host.endsWith('.vercel.app')
-    // Force same-origin proxy on Vercel even if env still points at Render
-    if (onVercel && (!env || /onrender\.com/i.test(env))) {
-      return '/api'
+  if (typeof window !== 'undefined' && window.location.hostname.endsWith('.vercel.app')) {
+    // Absolute env URL is fine unless it points at the broken old service
+    if (env && /^https?:\/\//i.test(env) && !/foodverse-ai-1\.onrender\.com/i.test(env)) {
+      return env
     }
+    return WORKING_RENDER_API
   }
 
+  if (env && /^https?:\/\//i.test(env)) return env
   if (env) return env
 
-  // Local Vite — prefer direct backend (vite also proxies /api → :8000)
-  if (import.meta.env.DEV) {
-    return 'http://localhost:8000'
-  }
-
-  return '/api'
+  if (import.meta.env.DEV) return 'http://localhost:8000'
+  return WORKING_RENDER_API
 }
 
 const API_BASE = resolveApiBase()
+const DEFAULT_RENDER_ORIGIN = WORKING_RENDER_API
 
-const DEFAULT_RENDER_ORIGIN = 'https://foodverse-ai-geef.onrender.com'
-
-/** Direct backend origin for WebSockets (Vercel /api rewrite is HTTP-only). */
+/** Direct backend origin for WebSockets. */
 function resolveWsOrigin() {
   const explicit = String(import.meta.env.VITE_WS_URL || '')
     .trim()
@@ -41,19 +37,8 @@ function resolveWsOrigin() {
   if (explicit) {
     return explicit.replace(/^wss:/i, 'https:').replace(/^ws:/i, 'http:')
   }
-  const apiEnv = String(import.meta.env.VITE_API_URL || '')
-    .trim()
-    .replace(/\/$/, '')
-  if (apiEnv && /^https?:\/\//i.test(apiEnv)) {
-    return apiEnv
-  }
-  if (
-    import.meta.env.DEV ||
-    API_BASE.includes('localhost') ||
-    API_BASE.includes('127.0.0.1')
-  ) {
-    return 'http://localhost:8000'
-  }
+  if (API_BASE.startsWith('http')) return API_BASE
+  if (import.meta.env.DEV) return 'http://localhost:8000'
   return DEFAULT_RENDER_ORIGIN
 }
 
@@ -65,11 +50,8 @@ const IS_REMOTE =
   (/^https?:\/\//i.test(API_BASE) && !/localhost|127\.0\.0\.1/i.test(API_BASE))
 
 function unreachableMessage() {
-  if (USES_PROXY) {
-    return `Cannot reach API (via /api proxy). Wake the Render service at https://foodverse-ai-1.onrender.com/health — free tier sleeps when idle — then retry.`
-  }
   if (IS_REMOTE) {
-    return `Cannot reach API at ${API_BASE}. Open that /health URL in a new tab to wake Render, wait ~30–60s, then retry.`
+    return `Cannot reach API at ${API_BASE}. Open ${WORKING_RENDER_API}/health to wake Render, wait ~30–60s, then retry.`
   }
   return `Cannot reach API at ${API_BASE}. Start the backend with: python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`
 }
@@ -90,7 +72,6 @@ async function request(path, options = {}) {
   const retries = options.retries ?? (IS_REMOTE ? 3 : 0)
   const { retries: _r, token: _t, ...fetchOpts } = options
 
-  let lastNetworkError = null
   for (let attempt = 0; attempt <= retries; attempt += 1) {
     let res
     try {
@@ -98,8 +79,7 @@ async function request(path, options = {}) {
         ...fetchOpts,
         headers,
       })
-    } catch (err) {
-      lastNetworkError = err
+    } catch {
       if (attempt < retries) {
         await sleep(1500 * 2 ** attempt)
         continue
@@ -170,7 +150,6 @@ export const api = {
     })
   },
 
-  // Live orders
   async createOrder(body) {
     return request('/orders', { method: 'POST', body: JSON.stringify(body) })
   },
