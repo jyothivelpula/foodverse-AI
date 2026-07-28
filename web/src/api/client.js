@@ -31,7 +31,7 @@ function resolveApiBase() {
 
 const API_BASE = resolveApiBase()
 
-const DEFAULT_RENDER_ORIGIN = 'https://foodverse-ai-1.onrender.com'
+const DEFAULT_RENDER_ORIGIN = 'https://foodverse-ai-geef.onrender.com'
 
 /** Direct backend origin for WebSockets (Vercel /api rewrite is HTTP-only). */
 function resolveWsOrigin() {
