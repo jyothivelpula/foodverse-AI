@@ -71,7 +71,15 @@ def _probe_database(*, init_schema: bool = False) -> dict:
             info["demo_users"] = True
     except Exception as exc:  # noqa: BLE001
         info["database"] = "error"
-        info["error"] = str(exc)[:300]
+        msg = str(exc)[:300]
+        # Render free tier often cannot reach Supabase Direct (IPv6-only)
+        if "Network is unreachable" in msg or "2406:" in msg:
+            msg += (
+                " | HINT: On Render use Supabase Session/Transaction POOLER URI "
+                "(…@aws-….pooler.supabase.com…), not db.xxx.supabase.co Direct "
+                "(IPv6). Username must be postgres.PROJECT_REF for the pooler."
+            )
+        info["error"] = msg[:450]
     return info
 
 
@@ -112,9 +120,14 @@ def health():
 
     settings = get_settings()
     key = (settings.groq_api_key or "").strip()
-    # Live probe every request so /health reflects current DATABASE_URL
     live = _probe_database(init_schema=False)
     boot = getattr(app.state, "db_info", {}) or {}
+
+    # If DB works now but startup seed failed (bad password during boot), retry once
+    if live.get("database") == "ok" and not boot.get("tables"):
+        boot = _probe_database(init_schema=True)
+        app.state.db_info = boot
+
     return {
         "status": "ok",
         "groq_configured": bool(key),
@@ -123,7 +136,7 @@ def health():
         "database_url_env_set": live.get("database_url_env_set"),
         "database_host": live.get("database_host"),
         "on_render": live.get("on_render"),
-        "tables": boot.get("tables"),
-        "demo_users": boot.get("demo_users"),
-        "db_error": live.get("error") or boot.get("error"),
+        "tables": boot.get("tables") if live.get("database") == "ok" else False,
+        "demo_users": boot.get("demo_users") if live.get("database") == "ok" else False,
+        "db_error": live.get("error"),
     }

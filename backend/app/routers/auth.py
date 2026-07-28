@@ -14,8 +14,9 @@ from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, UserO
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 _DB_DOWN = (
-    "Database unavailable. On Render, set DATABASE_URL to your Render Postgres "
-    "External/Internal URL, run create_tables + seed_users, then redeploy."
+    "Database unavailable. On Render, set DATABASE_URL to your Supabase "
+    "(or Render Postgres) connection URI, ensure tables/users exist, then redeploy. "
+    "Check /health → db_error for details."
 )
 
 
