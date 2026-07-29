@@ -53,11 +53,13 @@ Working backend: `https://foodverse-ai-geef.onrender.com/health` must show `"dat
 
 - `DATABASE_URL` = Supabase **Session pooler** URI (`postgres.PROJECT_REF@…pooler.supabase.com`)
 - `GROQ_API_KEY` required for chat
+- SMTP vars (`SMTP_HOST`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM`) for password-reset OTP emails
 - Free tier sleeps when idle — open `/health` once to wake it
 
 ## Notes
 
 - Auth: `POST /auth/register`, `POST /auth/login`, `GET /auth/me` (JWT includes `role`: `customer` | `chef`).
+- Password reset OTP: `/forgot-password` → `/verify-otp` → `/reset-password` (API: `POST /auth/forgot-password`, `/auth/verify-otp`, `/auth/resend-otp`, `/auth/reset-password`).
 - AI Lounge still uses `GET /health` and `POST /chat`.
 - Demo users (after `python seed_users.py`): `customer@foodverse.com` / `chef@foodverse.com` — password `password123`.
 - The older Streamlit UI remains in `frontend/` if you still need it.

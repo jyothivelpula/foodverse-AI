@@ -166,6 +166,19 @@ CREATE TABLE IF NOT EXISTS reviews (
   CONSTRAINT rating_range CHECK (rating >= 1 AND rating <= 5)
 );
 
+CREATE TABLE IF NOT EXISTS password_reset_otps (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) NOT NULL,
+  otp_hash VARCHAR(255) NOT NULL,
+  expires_at TIMESTAMPTZ NOT NULL,
+  attempts INTEGER NOT NULL DEFAULT 0,
+  resend_count INTEGER NOT NULL DEFAULT 0,
+  verified BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS ix_password_reset_otps_email ON password_reset_otps (email);
+
 -- Done. Next (optional): seed demo users from the backend:
 --   set DATABASE_URL to your Supabase URI, then:
 --   python seed_users.py

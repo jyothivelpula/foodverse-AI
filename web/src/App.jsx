@@ -9,12 +9,18 @@ import Menu from './pages/Menu'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import Orders from './pages/Orders'
-import AiLounge from './pages/AiLounge'
+import AiLoungeLayout from './pages/ai-lounge/AiLoungeLayout'
+import AiLoungeDashboard from './pages/ai-lounge/AiLoungeDashboard'
+import CategoryAssistants from './pages/ai-lounge/CategoryAssistants'
+import AssistantChat from './pages/ai-lounge/AssistantChat'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
 import Favorites from './pages/Favorites'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ForgotPassword from './pages/ForgotPassword'
+import VerifyOtp from './pages/VerifyOtp'
+import ResetPassword from './pages/ResetPassword'
 import ChefDashboard from './pages/chef/ChefDashboard'
 import {
   ChefPendingOrders,
@@ -55,6 +61,9 @@ export default function App() {
         <Route element={<GuestOnly />}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="verify-otp" element={<VerifyOtp />} />
+          <Route path="reset-password" element={<ResetPassword />} />
         </Route>
 
         {/* Customer area */}
@@ -66,7 +75,11 @@ export default function App() {
               <Route path="cart" element={<Cart />} />
               <Route path="checkout" element={<Checkout />} />
               <Route path="orders" element={<Orders />} />
-              <Route path="ai-lounge" element={<AiLounge />} />
+              <Route path="ai-lounge" element={<AiLoungeLayout />}>
+                <Route index element={<AiLoungeDashboard />} />
+                <Route path=":category" element={<CategoryAssistants />} />
+                <Route path=":category/:assistant" element={<AssistantChat />} />
+              </Route>
               <Route path="profile" element={<Profile />} />
               <Route path="settings" element={<Settings />} />
               <Route path="favorites" element={<Favorites />} />

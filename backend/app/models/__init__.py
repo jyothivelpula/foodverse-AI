@@ -8,6 +8,7 @@ from app.models.menu_item import MenuItem
 from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.models.order_status_history import OrderStatusHistory
+from app.models.password_reset_otp import PasswordResetOtp
 from app.models.persona import Persona
 from app.models.review import Review
 from app.models.user import User
@@ -21,6 +22,7 @@ __all__ = [
     "Order",
     "OrderItem",
     "OrderStatusHistory",
+    "PasswordResetOtp",
     "Persona",
     "ChatSession",
     "ChatMessage",

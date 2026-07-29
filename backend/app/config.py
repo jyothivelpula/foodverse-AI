@@ -96,6 +96,29 @@ class Settings(BaseSettings):
     cloudinary_api_key: str = ""
     cloudinary_api_secret: str = ""
 
+    # Used to build password-reset links (Vercel URL in production)
+    frontend_url: str = Field(
+        default="http://localhost:5173",
+        validation_alias=AliasChoices("FRONTEND_URL", "frontend_url"),
+    )
+
+    # SMTP for password-reset OTP emails (Gmail app password, SendGrid SMTP, etc.)
+    smtp_host: str = Field(default="", validation_alias=AliasChoices("SMTP_HOST", "smtp_host"))
+    smtp_port: int = Field(default=587, validation_alias=AliasChoices("SMTP_PORT", "smtp_port"))
+    smtp_user: str = Field(default="", validation_alias=AliasChoices("SMTP_USER", "smtp_user"))
+    smtp_password: str = Field(
+        default="", validation_alias=AliasChoices("SMTP_PASSWORD", "smtp_password")
+    )
+    smtp_from: str = Field(default="", validation_alias=AliasChoices("SMTP_FROM", "smtp_from"))
+    smtp_use_tls: bool = Field(
+        default=True, validation_alias=AliasChoices("SMTP_USE_TLS", "smtp_use_tls")
+    )
+    # When SMTP is missing, print OTP to server logs (local/dev only)
+    otp_console_fallback: bool = Field(
+        default=True,
+        validation_alias=AliasChoices("OTP_CONSOLE_FALLBACK", "otp_console_fallback"),
+    )
+
     @field_validator("database_url", mode="before")
     @classmethod
     def _fix_db_url(cls, value: object) -> object:

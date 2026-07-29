@@ -135,6 +135,30 @@ export const api = {
       body: JSON.stringify({ name, email, password, role, phone }),
     })
   },
+  async forgotPassword({ email }) {
+    return request('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    })
+  },
+  async verifyOtp({ email, otp }) {
+    return request('/auth/verify-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email, otp }),
+    })
+  },
+  async resendOtp({ email }) {
+    return request('/auth/resend-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    })
+  },
+  async resetPassword({ token, newPassword }) {
+    return request('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ token, new_password: newPassword }),
+    })
+  },
   async me(token) {
     return request('/auth/me', { token })
   },

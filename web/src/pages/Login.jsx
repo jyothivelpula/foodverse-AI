@@ -11,6 +11,7 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [successMessage] = useState(location.state?.successMessage || '')
   const [loading, setLoading] = useState(false)
 
   const onSubmit = async (e) => {
@@ -55,6 +56,12 @@ export default function Login() {
           <p className="mt-1 text-sm text-muted">Sign in to FoodVerse</p>
         </div>
 
+        {successMessage && !error && (
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+            {successMessage}
+          </div>
+        )}
+
         {error && (
           <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
@@ -84,6 +91,15 @@ export default function Login() {
             placeholder="••••••••"
           />
         </label>
+
+        <div className="flex justify-end">
+          <Link
+            to="/forgot-password"
+            className="text-sm font-semibold text-orange hover:underline"
+          >
+            Forgot Password?
+          </Link>
+        </div>
 
         <button
           type="submit"
