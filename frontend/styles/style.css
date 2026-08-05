@@ -6,11 +6,11 @@
    ═══════════════════════════════════════════ */
 
 :root {
-  --fv-primary: #d9481c;
-  --fv-hover: #f05a2a;
+  --fv-primary: #ff6347;
+  --fv-hover: #e8554a;
   --fv-ai: #7c3aed;
   --fv-ai-soft: rgba(124, 58, 237, 0.12);
-  --fv-orange-soft: rgba(217, 72, 28, 0.14);
+  --fv-orange-soft: rgba(255, 99, 71, 0.14);
   --fv-bg: #fff8f1;
   --fv-card: #ffffff;
   --fv-sidebar: #111827;
@@ -155,8 +155,8 @@ section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
   display: grid;
   place-items: center;
   font-size: 1.25rem;
-  background: linear-gradient(145deg, rgba(255, 107, 53, 0.22), rgba(255, 107, 53, 0.08));
-  border: 1px solid rgba(255, 107, 53, 0.35);
+  background: linear-gradient(145deg, rgba(255, 99, 71, 0.22), rgba(255, 99, 71, 0.08));
+  border: 1px solid rgba(255, 99, 71, 0.35);
   flex-shrink: 0;
 }
 
@@ -217,8 +217,8 @@ section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"] {
 }
 
 section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:has(button[kind="primary"]) {
-  background: rgba(255, 107, 53, 0.12) !important;
-  border-color: rgba(255, 107, 53, 0.28) !important;
+  background: rgba(255, 99, 71, 0.12) !important;
+  border-color: rgba(255, 99, 71, 0.28) !important;
 }
 
 section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:has(button[kind="primary"])::before {
@@ -229,7 +229,7 @@ section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:has(button[ki
   bottom: 10px;
   width: 3px;
   border-radius: 0 3px 3px 0;
-  background: #ff6b35;
+  background: #ff6347;
 }
 
 section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:hover {
@@ -238,8 +238,8 @@ section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:hover {
 }
 
 section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:has(button[kind="primary"]):hover {
-  background: rgba(255, 107, 53, 0.16) !important;
-  border-color: rgba(255, 107, 53, 0.35) !important;
+  background: rgba(255, 99, 71, 0.16) !important;
+  border-color: rgba(255, 99, 71, 0.35) !important;
 }
 
 .fv-nav-icon {
@@ -321,7 +321,7 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button div {
   border-radius: 11px;
   display: grid;
   place-items: center;
-  background: linear-gradient(145deg, #ff6b35, #ff814d);
+  background: linear-gradient(145deg, #ff6347, #ff814d);
   color: #fff;
   font-size: 0.95rem;
   font-weight: 700;
@@ -593,14 +593,14 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button div {
 
 /* Primary — orange fill */
 .fv-home-hero-cta .fv-home-cta-primary div[data-testid="stButton"] > button {
-  background: #ff6b35 !important;
-  border-color: #ff6b35 !important;
+  background: #ff6347 !important;
+  border-color: #ff6347 !important;
   color: #ffffff !important;
 }
 
 .fv-home-hero-cta .fv-home-cta-primary div[data-testid="stButton"] > button:hover {
-  background: #ff814d !important;
-  border-color: #ff814d !important;
+  background: #e8554a !important;
+  border-color: #e8554a !important;
   color: #ffffff !important;
 }
 
@@ -798,7 +798,7 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button div {
 
 .fv-home-cat div[data-testid="stButton"] button:hover {
   transform: translateY(-3px);
-  border-color: rgba(255, 107, 53, 0.4) !important;
+  border-color: rgba(255, 99, 71, 0.4) !important;
   box-shadow: var(--fv-shadow-hover) !important;
   background: #fffaf7 !important;
   color: var(--fv-heading) !important;

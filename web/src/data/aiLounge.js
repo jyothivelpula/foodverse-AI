@@ -9,7 +9,7 @@ export const AI_LOUNGE_CATEGORIES = [
     id: 'movies',
     title: 'Movies',
     icon: '🎬',
-    description: 'Actors, directors, reviews & cinema chats',
+    description: 'Cinema, creators & thoughtful recommendations',
     assistants: [
       {
         id: 'actress',
@@ -81,7 +81,7 @@ export const AI_LOUNGE_CATEGORIES = [
     id: 'food',
     title: 'Food',
     icon: '🍕',
-    description: 'Recipes, desserts & kitchen help',
+    description: 'Recipes, pairings & kitchen guidance',
     assistants: [
       {
         id: 'recipes',
@@ -145,7 +145,7 @@ export const AI_LOUNGE_CATEGORIES = [
     id: 'singers',
     title: 'Singers',
     icon: '🎵',
-    description: 'Music, albums & lyrics',
+    description: 'Artists, albums & music discovery',
     assistants: [
       {
         id: 'telugu',
@@ -201,7 +201,7 @@ export const AI_LOUNGE_CATEGORIES = [
     id: 'comedy',
     title: 'Comedy',
     icon: '😂',
-    description: 'Jokes, stand-up & funny chats',
+    description: 'Light laughs, stand-up & playful chat',
     assistants: [
       {
         id: 'jokes',
@@ -241,7 +241,7 @@ export const AI_LOUNGE_CATEGORIES = [
     id: 'technology',
     title: 'Technology',
     icon: '💻',
-    description: 'Code, AI & interview prep',
+    description: 'Code, AI & career practice',
     assistants: [
       {
         id: 'python',
@@ -313,7 +313,7 @@ export const AI_LOUNGE_CATEGORIES = [
     id: 'books',
     title: 'Books',
     icon: '📚',
-    description: 'Reads, authors & book clubs',
+    description: 'Stories, authors & reading picks',
     assistants: [
       {
         id: 'fiction',
@@ -353,7 +353,7 @@ export const AI_LOUNGE_CATEGORIES = [
     id: 'sports',
     title: 'Sports',
     icon: '⚽',
-    description: 'Matches, players & motivation',
+    description: 'Matches, performance & motivation',
     assistants: [
       {
         id: 'football',
@@ -393,7 +393,7 @@ export const AI_LOUNGE_CATEGORIES = [
     id: 'gaming',
     title: 'Gaming',
     icon: '🎮',
-    description: 'Games, tips & what to play',
+    description: 'Games, strategy & new releases',
     assistants: [
       {
         id: 'pc',

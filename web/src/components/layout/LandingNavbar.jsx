@@ -25,16 +25,16 @@ export default function LandingNavbar() {
     >
       <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-5 md:px-8">
         <Link to="/" className="flex items-center gap-2.5">
-          <span className="grid h-10 w-10 place-items-center rounded-full bg-[#FF5A1F] text-lg text-white shadow-lg shadow-[#FF5A1F]/35">
+          <span className="grid h-10 w-10 place-items-center rounded-full bg-[url('/foodverse-mark.svg')] bg-cover bg-center text-transparent shadow-[0_6px_12px_rgba(184,149,91,0.24)]">
             🍽
           </span>
           <span className="leading-tight">
-            <span className="block font-serif text-lg font-semibold text-[#00a600]">
+            <span className={`block font-serif text-[1.3rem] font-semibold tracking-[-0.02em] ${scrolled ? 'text-ink' : 'text-[#f8f0e7]'}`}>
               FoodVerse
             </span>
             <span
-              className={`block text-[10px] font-semibold uppercase tracking-[0.16em] ${
-                scrolled ? 'text-[#5A5A5A]' : 'text-white/70'
+              className={`block text-[9px] font-bold uppercase tracking-[0.22em] ${
+                scrolled ? 'text-[#6c6257]' : 'text-[#d8b77d]'
               }`}
             >
               AI Kitchen
@@ -45,7 +45,7 @@ export default function LandingNavbar() {
         <nav className="hidden items-center gap-8 md:flex">
           <Link
             to="/login"
-            className={`text-sm font-semibold transition hover:text-[#FF5A1F] ${
+            className={`text-sm font-semibold transition hover:text-orange ${
               scrolled ? 'text-[#1A1A1A]' : 'text-white/90'
             }`}
           >
@@ -58,7 +58,7 @@ export default function LandingNavbar() {
             to="/register"
             className={`hidden rounded-full px-4 py-2.5 text-sm font-semibold transition sm:inline-flex ${
               scrolled
-                ? 'border border-border text-[#1A1A1A] hover:border-[#FF5A1F]/40'
+                ? 'border border-border text-ink hover:border-orange/40'
                 : 'border border-white/25 bg-white/10 text-white backdrop-blur-md'
             }`}
           >
@@ -68,14 +68,14 @@ export default function LandingNavbar() {
             to="/login"
             className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition hover:scale-105 ${
               scrolled
-                ? 'bg-[#FF5A1F] text-white'
-                : 'bg-white text-[#1A1A1A]'
+                ? 'bg-orange text-white hover:bg-orange-hover'
+                : 'bg-white text-ink'
             }`}
           >
             <ShoppingBag size={16} />
             Order
             {cartCount > 0 && (
-              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#1A1A1A] px-1.5 text-[11px] text-white">
+              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-ink px-1.5 text-[11px] text-white">
                 {cartCount}
               </span>
             )}

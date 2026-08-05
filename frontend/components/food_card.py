@@ -65,7 +65,10 @@ def render_food_card(
     is_fav = item["id"] in favorites
     suffix = "c" if compact else "f"
     name = html.escape(str(item["name"]))
-    desc = html.escape(str(item.get("description") or "Chef’s special"))
+    raw_desc = str(item.get("description") or "Chef’s special")
+    if len(raw_desc) > 55:
+        raw_desc = raw_desc[:52].rstrip() + "…"
+    desc = html.escape(raw_desc)
     price = format_currency(float(item["price"]))
     image = html.escape(_image_for(item))
     rating_txt = f"⭐ {rating}" if rating else "Chef pick"
@@ -81,10 +84,10 @@ def render_food_card(
             {badge_html}
             <span class="fv-lux-rating-chip">{rating_txt}</span>
           </div>
-          <div class="fv-lux-body">
-            <h4 class="fv-lux-title">{name}</h4>
-            <p class="fv-lux-desc">{desc}</p>
-            <div class="fv-lux-meta">
+          <div class="fv-lux-body" style="padding-top:10px;">
+            <h4 class="fv-lux-title" style="color:#1a1414;font-weight:700;opacity:1;margin-bottom:4px;">{name}</h4>
+            <p class="fv-lux-desc" style="color:#5a5450;margin-bottom:8px;">{desc}</p>
+            <div class="fv-lux-meta" style="margin-bottom:0;">
               <span class="fv-lux-price">{price}</span>
               <span class="fv-lux-prep">⏱ {prep} min</span>
             </div>

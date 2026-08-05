@@ -23,7 +23,7 @@ import {
 } from '../../utils/orderStatus'
 
 const BRAND_GREEN = '#00a600'
-const BRAND_ORANGE = '#FF5A1F'
+const BRAND_ORANGE = '#ff6347'
 
 function startOfToday() {
   const d = new Date()

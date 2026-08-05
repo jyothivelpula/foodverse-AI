@@ -75,7 +75,7 @@ export default function Cart() {
             </div>
             <Link
               to="/checkout"
-              className="rounded-full bg-gradient-to-r from-orange to-[#ff7a45] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-orange/25 transition hover:scale-105"
+              className="rounded-full bg-gradient-to-r from-orange to-[#ff8575] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-orange/25 transition hover:scale-105"
             >
               Checkout
             </Link>

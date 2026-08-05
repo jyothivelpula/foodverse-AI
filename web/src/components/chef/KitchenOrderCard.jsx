@@ -89,7 +89,7 @@ export default function KitchenOrderCard({
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-cream-deep">
               <motion.div
-                className="h-full rounded-full bg-gradient-to-r from-orange to-[#ff8a5c]"
+                className="h-full rounded-full bg-gradient-to-r from-orange to-[#ff8575]"
                 initial={{ width: 0 }}
                 animate={{ width: `${pct}%` }}
                 transition={{ duration: 0.4 }}
