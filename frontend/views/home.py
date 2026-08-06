@@ -57,7 +57,7 @@ def render() -> None:
           <div class="fv-hero-dark-inner">
             <div>
               <div class="fv-hero-eyebrow">Smart Restaurant · AI Companion</div>
-              <h1 class="fv-hero-title">Order dinner.<br/>Wait with a <em>friend.</em></h1>
+              <h1 class="fv-hero-title">Great food.<br/><em>Better moments.</em></h1>
               <p class="fv-hero-lead">
                 Every order unlocks the AI Lounge — chat with a Chef, a Mentor,
                 or a Story Teller while your meal is being prepared.
@@ -116,6 +116,47 @@ def render() -> None:
         unsafe_allow_html=True,
     )
 
+    st.markdown(
+        """
+        <div class="fv-editorial-panel">
+          <div class="fv-editorial-layout">
+            <div class="fv-editorial-copy">
+              <div class="fv-editorial-kicker">FoodVerse experience</div>
+              <h2>Dining that feels as curated as the meal itself.</h2>
+              <p>From first bite to last chat, every touchpoint is designed to feel warm, intentional, and beautifully fast.</p>
+            </div>
+            <div class="fv-editorial-side">
+              <div class="fv-editorial-side-label">Signature promise</div>
+              <div class="fv-editorial-side-value">03 layers of hospitality</div>
+              <div class="fv-editorial-side-list">
+                <span>Discovery</span>
+                <span>Companionship</span>
+                <span>Visibility</span>
+              </div>
+            </div>
+          </div>
+          <div class="fv-editorial-grid">
+            <div class="fv-editorial-card">
+              <div class="fv-editorial-number">01</div>
+              <div class="fv-editorial-card-title">Smart menu discovery</div>
+              <div class="fv-editorial-card-copy">Find what you want fast with guided recommendations and a premium search flow.</div>
+            </div>
+            <div class="fv-editorial-card">
+              <div class="fv-editorial-number">02</div>
+              <div class="fv-editorial-card-title">AI lounge companionship</div>
+              <div class="fv-editorial-card-copy">Stay connected with chef, storyteller, and playful personas while your order is in motion.</div>
+            </div>
+            <div class="fv-editorial-card">
+              <div class="fv-editorial-number">03</div>
+              <div class="fv-editorial-card-title">Live kitchen visibility</div>
+              <div class="fv-editorial-card-copy">Track the order journey with a calm, confident timeline that keeps anticipation high.</div>
+            </div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
     # ── Featured dishes ──
     st.markdown(
         """
@@ -134,6 +175,33 @@ def render() -> None:
         with col:
             with st.container(border=True):
                 render_food_card(item, compact=True, show_favorite=False)
+
+    st.markdown(
+        """
+        <div class="fv-story-panel">
+          <div class="fv-story-copy">
+            <div class="fv-editorial-kicker">Why FoodVerse</div>
+            <h2>Built for a more elevated dining rhythm.</h2>
+            <p>FoodVerse blends discovery, anticipation, and conversation into one refined experience — making every order feel calmer, smarter, and more memorable.</p>
+          </div>
+          <div class="fv-story-metrics">
+            <div class="fv-story-metric">
+              <strong>01.</strong>
+              <span>Guided discovery</span>
+            </div>
+            <div class="fv-story-metric">
+              <strong>02.</strong>
+              <span>Live kitchen updates</span>
+            </div>
+            <div class="fv-story-metric">
+              <strong>03.</strong>
+              <span>Companion-led comfort</span>
+            </div>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     # ── AI Lounge preview ──
     st.markdown(

@@ -83,7 +83,7 @@ export default function Orders() {
           </p>
           <Link
             to="/menu"
-            className="mt-6 inline-flex rounded-full bg-[#F97316] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-orange/25 transition hover:scale-105 hover:bg-[#ea580c]"
+            className="mt-6 inline-flex rounded-full bg-[#b8955b] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#b8955b]/25 transition hover:scale-105 hover:bg-[#94733f]"
           >
             Browse Menu
           </Link>
@@ -100,7 +100,7 @@ export default function Orders() {
           <motion.section
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-[24px] bg-gradient-to-br from-red-600 via-red-500 to-rose-500 p-7 text-white shadow-lg md:p-9"
+            className="overflow-hidden rounded-[30px] bg-gradient-to-br from-red-600 via-red-500 to-rose-500 p-7 text-white shadow-[0_22px_60px_rgba(225,44,44,0.26)] md:p-9"
           >
             <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em]">
               <XCircle size={14} />
@@ -120,7 +120,7 @@ export default function Orders() {
           <motion.section
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-[24px] bg-gradient-to-br from-[#F97316] via-[#fb923c] to-[#ea580c] p-7 text-white shadow-[0_18px_50px_rgba(249,115,22,0.35)] md:p-9"
+            className="overflow-hidden rounded-[30px] bg-gradient-to-br from-[#F97316] via-[#fb923c] to-[#ea580c] p-7 text-white shadow-[0_22px_60px_rgba(249,115,22,0.34)] md:p-9"
           >
             <div className="flex flex-wrap items-center gap-2">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em]">
@@ -166,7 +166,7 @@ export default function Orders() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="rounded-[24px] border border-[#EAEAEA] bg-white p-6 shadow-[0_12px_40px_rgba(31,31,31,0.06)] md:p-8"
+            className="rounded-[28px] border border-[#ede6dd] bg-gradient-to-br from-white via-[#fffdfb] to-[#f8f2ea] p-6 shadow-[0_14px_48px_rgba(31,31,31,0.07)] md:p-8"
           >
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
@@ -263,12 +263,19 @@ export default function Orders() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="rounded-[24px] border border-[#EAEAEA] bg-white p-6 shadow-[0_12px_40px_rgba(31,31,31,0.06)] md:p-8"
+            className="rounded-[28px] border border-[#ede6dd] bg-gradient-to-br from-white via-[#fffdfb] to-[#f8f2ea] p-6 shadow-[0_14px_48px_rgba(31,31,31,0.07)] md:p-8"
           >
-            <h2 className="font-serif text-3xl font-semibold text-[#1F1F1F]">AI Waiting Lounge</h2>
-            <p className="mt-2 text-sm text-[#5A5A5A]">
-              Pick a companion to chat with while your food is prepared.
-            </p>
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h2 className="font-serif text-3xl font-semibold text-[#1F1F1F]">AI Waiting Lounge</h2>
+                <p className="mt-2 text-sm text-[#5A5A5A]">
+                  Pick a companion to chat with while your food is prepared.
+                </p>
+              </div>
+              <span className="rounded-full bg-[#fff5ed] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-orange">
+                companions
+              </span>
+            </div>
 
             <div className="mt-5 flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {LOUNGE_CHIPS.map(({ key, chip }) => {
@@ -291,7 +298,7 @@ export default function Orders() {
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-[0.95fr_1.15fr]">
-              <div className="rounded-[20px] border border-[#EAEAEA] bg-[#FFF9F3] p-5">
+              <div className="rounded-[24px] border border-[#ede6dd] bg-[#fff8f1] p-5 shadow-sm">
                 <div className="grid h-16 w-16 place-items-center rounded-2xl bg-white text-3xl shadow-sm">
                   {persona.emoji}
                 </div>
@@ -302,12 +309,12 @@ export default function Orders() {
                 <Link
                   to="/ai-lounge"
                   onClick={() => setPersona(persona.key)}
-                  className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-[#F97316] py-2.5 text-sm font-semibold text-white"
+                  className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#ff6347] to-[#ff8575] py-2.5 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(255,99,71,0.24)]"
                 >
                   Start chatting
                 </Link>
               </div>
-              <div className="flex flex-col justify-center rounded-[20px] border border-[#EAEAEA] bg-white p-5 shadow-sm">
+              <div className="flex flex-col justify-center rounded-[24px] border border-[#ede6dd] bg-white p-5 shadow-sm">
                 <div className="relative max-w-[95%] rounded-[18px] rounded-tl-md bg-[#FFF7ED] px-4 py-3 text-sm leading-relaxed text-[#1F1F1F]">
                   <span className="mb-1 block text-xs font-bold uppercase tracking-wide text-[#F97316]">
                     {persona.characterName}
@@ -328,7 +335,7 @@ export default function Orders() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.14 }}
-            className="h-fit rounded-[24px] border border-[#EAEAEA] bg-white p-6 shadow-[0_12px_40px_rgba(31,31,31,0.06)] lg:sticky lg:top-24"
+            className="h-fit rounded-[28px] border border-[#ede6dd] bg-gradient-to-br from-white via-[#fffdf8] to-[#f8f2ea] p-6 shadow-[0_14px_48px_rgba(31,31,31,0.07)] lg:sticky lg:top-24"
           >
             <h2 className="font-serif text-2xl font-semibold text-[#1F1F1F]">Order Details</h2>
             <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-[#9CA3AF]">

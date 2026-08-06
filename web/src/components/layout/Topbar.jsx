@@ -56,7 +56,7 @@ export default function Topbar({ onOpenNav }) {
           onClick={recheck}
           className={`hidden h-10 items-center gap-1.5 rounded-full border px-3 text-xs font-bold sm:inline-flex ${
             online
-              ? 'border-[#00a600]/25 bg-[#00a600]/10 text-[#00a600]'
+              ? 'border-brand/25 bg-brand/10 text-brand'
               : 'border-red-200 bg-red-50 text-red-700'
           }`}
         >
@@ -92,7 +92,7 @@ export default function Topbar({ onOpenNav }) {
 
         <Link
           to="/profile"
-          className="hidden h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-orange to-[#00a600] text-sm font-bold text-white shadow-md shadow-orange/25 sm:grid"
+          className="hidden h-12 w-12 place-items-center rounded-full bg-ink text-sm font-bold text-white shadow-md sm:grid"
           title={customer.name}
         >
           {(customer.name || 'G').slice(0, 1).toUpperCase()}

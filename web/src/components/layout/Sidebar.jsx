@@ -38,12 +38,12 @@ export default function Sidebar() {
   return (
     <aside className="glass-strong sticky top-0 hidden h-screen w-[260px] shrink-0 flex-col border-r border-border/80 px-3.5 py-5 md:flex">
       <div className="flex items-center gap-3 px-2 pb-6">
-        <div className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-orange to-[#ff8a55] text-lg text-white shadow-lg shadow-orange/35">
+        <div className="grid h-11 w-11 place-items-center rounded-2xl bg-[url('/foodverse-mark.svg')] bg-cover bg-center text-transparent shadow-[0_6px_12px_rgba(184,149,91,0.24)]">
           🍽
         </div>
         <div>
-          <div className="font-serif text-lg font-bold text-[#00a600]">FoodVerse</div>
-          <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">
+          <div className="font-serif text-xl font-semibold tracking-[-0.02em] text-ink">FoodVerse</div>
+          <div className="text-[9px] font-bold uppercase tracking-[0.22em] text-[#94733f]">
             AI Kitchen
           </div>
         </div>
@@ -61,7 +61,7 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `relative flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold transition ${
                 isActive
-                  ? 'bg-gradient-to-r from-orange/15 to-[#00a600]/10 text-orange shadow-sm'
+                  ? 'bg-orange/10 text-orange shadow-sm'
                   : 'text-ink hover:translate-x-0.5 hover:bg-white/50'
               }`
             }
@@ -97,14 +97,14 @@ export default function Sidebar() {
       </button>
 
       <div className="glass flex items-center gap-3 rounded-2xl p-3">
-        <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-orange to-[#00a600] font-bold text-white">
+        <div className="grid h-10 w-10 place-items-center rounded-full bg-brand font-bold text-white">
           {first.slice(0, 1).toUpperCase()}
         </div>
         <div className="min-w-0">
           <div className="truncate text-sm font-bold">{first}</div>
           <div className="flex items-center gap-1.5 text-xs text-muted">
             <span
-              className={`h-2 w-2 rounded-full ${online ? 'bg-[#00a600]' : 'bg-red-400'}`}
+              className={`h-2 w-2 rounded-full ${online ? 'bg-brand' : 'bg-red-400'}`}
             />
             {online ? 'API Online' : online === false ? 'API Offline' : 'Checking…'}
           </div>

@@ -1,0 +1,15 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">FoodVerse premium restaurant mark</title>
+  <defs>
+    <linearGradient id="medallion" x1="18" y1="14" x2="77" y2="82" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D8BD86"/>
+      <stop offset="1" stop-color="#9B773F"/>
+    </linearGradient>
+  </defs>
+  <circle cx="48" cy="48" r="46" fill="#1E1A17"/>
+  <circle cx="48" cy="48" r="44.5" stroke="url(#medallion)" stroke-width="3"/>
+  <circle cx="50" cy="49" r="19" stroke="#F8F0E7" stroke-width="2.75"/>
+  <path d="M25 31V44.5C25 48.1 27.9 51 31.5 51C35.1 51 38 48.1 38 44.5V31M31.5 31V65" stroke="#F8F0E7" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M61.5 31V65M61.5 31C67.8 35.9 69.2 44.9 65.4 51.4C64.2 53.4 62.9 54.6 61.5 55.4" stroke="#F8F0E7" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M70.5 20L72.1 24.4L76.5 26L72.1 27.6L70.5 32L68.9 27.6L64.5 26L68.9 24.4L70.5 20Z" fill="#D8BD86"/>
+</svg>
